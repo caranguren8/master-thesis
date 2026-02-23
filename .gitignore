@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.pyc
+
+# environments
+.env
+.venv
+venv/
+conda-meta/
+
+# data
+data/raw/*
+data/external/*
+!data/raw/.gitkeep
+!data/external/.gitkeep
+
+# notebooks
+.ipynb_checkpoints/
+
+# OS
+.DS_Store
+Thumbs.db
