@@ -1,22 +1,40 @@
 # Python
 __pycache__/
 *.pyc
+*.egg-info/
 
-# environments
+# Environments
 .env
 .venv
 venv/
 conda-meta/
 
-# data
-data/raw/*
-data/external/*
-!data/raw/.gitkeep
-!data/external/.gitkeep
+# Data – raw and external (large source files, not tracked)
+data/raw/
+data/external/
 
-# notebooks
+# Data – large processed intermediates (reproducible from pipeline)
+data/processed/spain_master_dataset.csv
+data/processed/rdd_outcomes_enriched.csv
+data/processed/person_id_map.csv
+data/processed/person_id_validation_sample.csv
+data/processed/windows/
+
+# Temporary files
+tmp/
+
+# IDE
+.idea/
+
+# Claude worktrees (auto-managed)
+.claude/worktrees/
+
+# Notebooks
 .ipynb_checkpoints/
 
 # OS
 .DS_Store
 Thumbs.db
+
+# Node
+node_modules/

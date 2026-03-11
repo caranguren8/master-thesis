@@ -1,0 +1,2 @@
+method_requested,method_used,data_rows,unique_candidates,unique_person_id,multi_name_person_ids,rows_in_multi_name_person_ids,merge_mode,unmatched_after_merge,lt_distance_threshold,lt_max_block_size,validation_target_matches,validation_target_nonmatches,validation_actual_matches,validation_actual_nonmatches
+exact,exact,39909,30343,30324,19,52,n/a,0,0.1,120,200,200,200,200

@@ -1,0 +1,1958 @@
+Received: from GV0P278MB1897.CHEP278.PROD.OUTLOOK.COM (2603:10a6:710:6c::8) by
+ GV0P278MB1320.CHEP278.PROD.OUTLOOK.COM with HTTPS; Tue, 21 Oct 2025 12:32:28
+ +0000
+ARC-Seal: i=2; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=pass;
+ b=cukkkfadj5BBw+7PNJwPTXxaEZyfCL+Pw2ZA8/9ZppC4a8CYDWSZEDipgXiHWRevSMkyURRMDfOQ9+nDMWvWpAUczUQDI0Vq5/dl0+exaAwyBHvvrQsD6j4EqkqoAaVoaW4KfHhfJmIaePtFk5k5hEFuEG2fgEcawowOtZZ03A/4LGSBrUE1mwe4sNWcik6sb+zBicikOOAZcFa/hdGx004G8vh0lyzvfoAZhcHtNfiYVEdEaO11JqwuQ2T9T0K67QC+T24LkUAmfI/uO+N+tjfuE9LYF2m8WQr+dJdJXoja6uVNLQlFyJR0GBrc61kaFV3omvRBpwcBMKq4LJqGnw==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=4EkTO16QpX3wVo/ScGsekMXpjJ9u5vmHu2J0RtEl32o=;
+ b=pTFWwtURtxHby/zqMMnI4MBJDaFL+KIFNtnmWNg8FI+ImFpH6lLQ+P6drpN6TOo5PSSV+GzdfunwPdz8j6B7n2G2sYzEquv4bq5az3sDJh857eCipzj1Yskseqh16yAHbFapOwUMKi/VgjM5qaWc7Lk6erF8p1HMu13Nm6yCablKK1KpbzzQUO0BM0W/9rl/IBhXe0oENp5LQS2wV59oYoh5G5yW0xCuw8gFv5bqw6W1z8TwwNKSQILtYEniDZL7FtkOYxMa8Sz27ojjhYXFr7EynlX/Dj9/Bppj4pqqlGIxCeH9A79ZNkawjSubRTPfFAceRrELTajQpuy3ZqqhxQ==
+ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=pass (sender ip is
+ 147.88.247.29) smtp.rcpttodomain=stud.hslu.ch smtp.mailfrom=unilu.ch;
+ dmarc=pass (p=none sp=none pct=100) action=none header.from=unilu.ch;
+ dkim=pass (signature was verified) header.d=uniluch0.onmicrosoft.com;
+ arc=pass (0 oda=1 ltdi=1 spf=[1,1,smtp.mailfrom=unilu.ch]
+ dkim=[1,1,header.d=unilu.ch] dmarc=[1,1,header.from=unilu.ch])
+Received: from DB9PR02CA0005.eurprd02.prod.outlook.com (2603:10a6:10:1d9::10)
+ by GV0P278MB1897.CHEP278.PROD.OUTLOOK.COM (2603:10a6:710:6c::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9253.12; Tue, 21 Oct
+ 2025 12:32:25 +0000
+Received: from DU2PEPF00028D0B.eurprd03.prod.outlook.com
+ (2603:10a6:10:1d9:cafe::d0) by DB9PR02CA0005.outlook.office365.com
+ (2603:10a6:10:1d9::10) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9228.16 via Frontend Transport; Tue,
+ 21 Oct 2025 12:32:25 +0000
+Authentication-Results: spf=pass (sender IP is 147.88.247.29)
+ smtp.mailfrom=unilu.ch; dkim=pass (signature was verified)
+ header.d=uniluch0.onmicrosoft.com;dmarc=pass action=none
+ header.from=unilu.ch;compauth=pass reason=100
+Received-SPF: Pass (protection.outlook.com: domain of unilu.ch designates
+ 147.88.247.29 as permitted sender) receiver=protection.outlook.com;
+ client-ip=147.88.247.29; helo=mail2.unilu.ch; pr=C
+Received: from mx01.hslu.ch (147.88.201.244) by
+ DU2PEPF00028D0B.mail.protection.outlook.com (10.167.242.171) with Microsoft
+ SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.20.9228.7
+ via Frontend Transport; Tue, 21 Oct 2025 12:32:24 +0000
+X-ASG-Debug-ID: 1761049942-0729233ccc673d0001-Qs9ynQ
+Received: from mail2.unilu.ch (mail2.unilu.ch [147.88.247.29]) by mx01.hslu.ch with ESMTP id 0K69fVHBbQAoU1M4 (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO) for <camilo.arangurenbarragan@stud.hslu.ch>; Tue, 21 Oct 2025 14:32:22 +0200 (CEST)
+X-Barracuda-Envelope-From: btv1==389f72e2869==lukas.schmid@unilu.ch
+X-Barracuda-Effective-Source-IP: mail2.unilu.ch[147.88.247.29]
+X-Barracuda-Apparent-Source-IP: 147.88.247.29
+Received: from ZRAP278CU002.outbound.protection.outlook.com (mail-switzerlandnorthazlp17010000.outbound.protection.outlook.com [40.93.85.0]) by mail2.unilu.ch with ESMTP id 98Nh4OYYHHVM6vQL (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO) for <camilo.arangurenbarragan@stud.hslu.ch>; Tue, 21 Oct 2025 14:32:19 +0200 (CEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=v8mieGXvJUSviOPsNHDxtSmDaS1MH/SB00XN/N86L5yEr+FCTD4+W1ao5UXKVgdrhgt78Patq7Uh6rWWS17k0gD9Xl+XTgH/mz6LhtEDQLD1QrZwD0IgCS3ps74aLleSnXiffL1p22Gn9srmBdrbuI2JvRbbUTvfetGWo0Y5dfQVVVUiPwtpZixPrTfxM3/y1O/LuHhgFdeeoxEXq4SF9zfg1AYcCsTd0ghRADZjZpf1vnm0+NNLzzAt9lSf/j1lDvRX4TSWjf9eEmhKjinBEYQPvt+NVPOjN08uWCy3wj6K7nHfWvmJkxfU3jEhbPQfjtoh/2Kair5tonXrNTAJJg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=4EkTO16QpX3wVo/ScGsekMXpjJ9u5vmHu2J0RtEl32o=;
+ b=qiP8MVkxvLilMFEE5DktR+tDUBnh66DFRqS6RwW4rRkiNmyF4P7vAL7nYumrzSPEeanjMdmETldL12mQoHpEMZRd3pQeTL26JmbyclU+ZAKlKL/2IeY9AbOioc0p47IuQGeYlPLVEqXouTkZ2wW8mgcNzRKeXZRM4GU24RmkBLVmoa8o5/uhbjmYZ7ShjCIiIpdTbmvxSNgsBwHwoQ5Cg6qULBBeHrArYSWcncKZogKfV0BmFpUKXGl9I641HWF4hSSPEtfCydieB8eLN0INpsL2BCxNTE4hLQeT7tSbrcyppgv6BTrBz71hx5MzQoVffKXpvvO9qJYmGhxsRKEtZQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=unilu.ch; dmarc=pass action=none header.from=unilu.ch;
+ dkim=pass header.d=unilu.ch; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=uniluch0.onmicrosoft.com; s=selector1-uniluch0-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=4EkTO16QpX3wVo/ScGsekMXpjJ9u5vmHu2J0RtEl32o=;
+ b=nyExk+kN6j0rzrJITJa8VqbVFkCtKtMoYSpGqlVq4V1xTRg8CciKH1/hQK9IgV7yliaGHc6IlK2SYFDotiUB3GQys7PS5v5aGLPJ5ek0O8E5lrpasOBzKLRDs5PZ79MFYWBKOh4fZ8Y9osL/m0H0a87z1+yFkLePcIgsFYpvQW4=
+Received: from GV0P278MB1766.CHEP278.PROD.OUTLOOK.COM (2603:10a6:710:6e::14)
+ by GV0P278MB1125.CHEP278.PROD.OUTLOOK.COM (2603:10a6:710:4d::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9253.12; Tue, 21 Oct
+ 2025 12:32:18 +0000
+Received: from GV0P278MB1766.CHEP278.PROD.OUTLOOK.COM
+ ([fe80::96c4:4270:3b1f:c6b]) by GV0P278MB1766.CHEP278.PROD.OUTLOOK.COM
+ ([fe80::96c4:4270:3b1f:c6b%6]) with mapi id 15.20.9253.011; Tue, 21 Oct 2025
+ 12:32:18 +0000
+From: Schmid Lukas D. <lukas.schmid@unilu.ch>
+To: Aranguren Barragan Camilo Andres W.MSCIDS.2401
+	<camilo.arangurenbarragan@stud.hslu.ch>
+Subject: =?Windows-1252?Q?AW:_=93Estimation_of_the_Incumbency_Advantage=94_Project?=
+Thread-Topic: =?Windows-1252?Q?=93Estimation_of_the_Incumbency_Advantage=94_Project?=
+X-ASG-Orig-Subj: =?Windows-1252?Q?AW:_=93Estimation_of_the_Incumbency_Advantage=94_Project?=
+Thread-Index: AQHb0gw83qDS8FGlXUuxxVbih+QxarPuSDKwgAACENmAAABtMIAAMhklgAKFmICAAATe14Aa2lVAgAAAmhSAAAVwsIAAJxVQgJWRLOyAAALVMIAKcR3LgAAgrRCAAAK6TYAB7lahgAALmcCAAcFyw4AACu0AgA0uSf6AAmnZcIANxuEXgAACIKA=
+Date: Tue, 21 Oct 2025 12:32:17 +0000
+Message-ID: <GV0P278MB17665B57FDDBBB907AB355C2E2F2A@GV0P278MB1766.CHEP278.PROD.OUTLOOK.COM>
+References: <GV0P278MB1320066F1B00E85BDE9CD691B360A@GV0P278MB1320.CHEP278.PROD.OUTLOOK.COM>
+ <12d92a2767a649aa947b87125476c5d1@unilu.ch>
+ <GV0P278MB1320FDEE0E836FAF1285A60BB363A@GV0P278MB1320.CHEP278.PROD.OUTLOOK.COM>
+ <6c72efb1acf245a4844527da0d824dc1@unilu.ch>
+ <GV0P278MB1320D843266647B40A844E9BB363A@GV0P278MB1320.CHEP278.PROD.OUTLOOK.COM>
+ <9a9a4eebb99c43e4877ce18cf44589e3@unilu.ch>
+ <GV0P278MB132043E081ED8DDC66531F70B36DA@GV0P278MB1320.CHEP278.PROD.OUTLOOK.COM>
+ <ZR0P278MB0012777EC752F0BDFD7C4C60E27CA@ZR0P278MB0012.CHEP278.PROD.OUTLOOK.COM>
+ <GV0P278MB13203D78D1621A514031F1D3B37CA@GV0P278MB1320.CHEP278.PROD.OUTLOOK.COM>
+ <ZR0P278MB001275F279BDA39F3A154360E27CA@ZR0P278MB0012.CHEP278.PROD.OUTLOOK.COM>
+ <ZR0P278MB00126D9A18F3AF9AFC0D7C50E27CA@ZR0P278MB0012.CHEP278.PROD.OUTLOOK.COM>
+ <GV0P278MB1320F0CDC7D20C6A1071EA7BB31DA@GV0P278MB1320.CHEP278.PROD.OUTLOOK.COM>
+ <GV0P278MB1766D78FE724BA7373726187E21DA@GV0P278MB1766.CHEP278.PROD.OUTLOOK.COM>
+ <ZR1P278MB131018D750319C493FC11B81B31AA@ZR1P278MB1310.CHEP278.PROD.OUTLOOK.COM>
+ <GV0P278MB1766004B670CF56C2109803DE21AA@GV0P278MB1766.CHEP278.PROD.OUTLOOK.COM>
+ <ZR1P278MB1310CCBE4195C838B04BFA46B31AA@ZR1P278MB1310.CHEP278.PROD.OUTLOOK.COM>
+ <GV0P278MB1320DCB3F6375D3807F58563B3E6A@GV0P278MB1320.CHEP278.PROD.OUTLOOK.COM>
+ <GV0P278MB1766EBBF73E5C98F80B4FB2AE2E6A@GV0P278MB1766.CHEP278.PROD.OUTLOOK.COM>
+ <GV0P278MB13206E9C462D4E66C5C21F84B3E7A@GV0P278MB1320.CHEP278.PROD.OUTLOOK.COM>
+ <GV0P278MB176653EE43B28490F8E5618FE2E7A@GV0P278MB1766.CHEP278.PROD.OUTLOOK.COM>
+ <GV0P278MB1320951E82C3E31C2B2288CEB3ECA@GV0P278MB1320.CHEP278.PROD.OUTLOOK.COM>
+ <GV0P278MB1766E7DCD9B2B9979D858AF9E2EDA@GV0P278MB1766.CHEP278.PROD.OUTLOOK.COM>
+ <GV0P278MB1320E2180AC72878FA185EF2B3F2A@GV0P278MB1320.CHEP278.PROD.OUTLOOK.COM>
+In-Reply-To: <GV0P278MB1320E2180AC72878FA185EF2B3F2A@GV0P278MB1320.CHEP278.PROD.OUTLOOK.COM>
+Accept-Language: de-CH, en-US
+Content-Language: de-DE
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+Authentication-Results-Original: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=unilu.ch;
+x-ms-traffictypediagnostic: GV0P278MB1766:EE_|GV0P278MB1125:EE_|DU2PEPF00028D0B:EE_|GV0P278MB1897:EE_|GV0P278MB1320:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1f856b5a-1275-4974-afdf-08de109de3a8
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+X-Microsoft-Antispam-Untrusted: BCL:0;ARA:13230040|1800799024|366016|376014|8096899003|7053199007|13003099007|38070700021;
+X-Microsoft-Antispam-Message-Info-Original: =?us-ascii?Q?mG/HLxQDx86oQIbsxOrQavTgR3DCQ+TURc8TrdOErjcZkQdrA0AJDC+jGNpB?=
+ =?us-ascii?Q?6+xkor3EjltHiz6NG1MVLUwSjv+KfKNWTDlJOoToVq+qGh4w6Cd5odQN/uMd?=
+ =?us-ascii?Q?fZ4Dp5vcXoTa/dohjVIVXqs0Oa38lrkAw2VRr9U4TXlmFhZ0sKeyVhxQgRU6?=
+ =?us-ascii?Q?a9bndcI7ofHdt1iW6BbthS3ILlPLm/XArCj5tAuLPcBHNAkKuy46PoZL6uTH?=
+ =?us-ascii?Q?GOPZLXpYDAZrKUQM/ZPo8ymf19PyXH1TLOYfwdusbMhp5ci6+Jt5od0K4rc4?=
+ =?us-ascii?Q?CL4iGpxJ9HBaejTxZMM+dxeT5Ok+PdnnZgV84qVlOp2adbSYsIgKb5o6Rjx0?=
+ =?us-ascii?Q?C1bo4ZA4Z6MET+eSHDtYoBFkz2On0EEJmN10A/u1aFu9+rj1aU0hJksMYyrT?=
+ =?us-ascii?Q?or55cFyyUC21IqAnpIsJ/CJFCmnajv81Foz2O31ktK3qxKu7UqIBz3SpliAi?=
+ =?us-ascii?Q?A7hZ4czqMGysieDttj/Cod6Uudy7jt7cZRyQ22zz0seDI8ZbZAAw53E0FSzu?=
+ =?us-ascii?Q?ApH3OUS/SwneynPKYQnslmsyCf4IXSYJu2rq04AaNTs3azcuSLpCNcd9P8SZ?=
+ =?us-ascii?Q?1b9oH/nF8pz8w0Kdh5q7ukovzsI9+H/DTw1KF5OX3YDTwIms3kMx8805nFCg?=
+ =?us-ascii?Q?sv/G6bhHA/Ob2gBo/6P8lL2Xh/5kmsYgoostB7epfxeBD3AUpvC+wSXM4jXQ?=
+ =?us-ascii?Q?yOMnl0Y++ZUSSbyw6zGcCgwlo9yQ4pfTjFkGm3DCAnM5Af2xsPvBSOqiw3Y6?=
+ =?us-ascii?Q?au9pMCCu+WI3W0FzO5tNIY9a/eK23QtqrrQ9NH+OsU3qrAFLnh0DZCfncbQ7?=
+ =?us-ascii?Q?2hYVj8FhZlUfOR9rkY60imQzUOYVt3hff3wBBGHC30/0tvkMHPfSFWwT7T3L?=
+ =?us-ascii?Q?jdi6ZqGz7Bjw8rSfjLFg0EtYyscyyqW/vI1jQdEPTd3yS/ZQpO2DHcRUFxKF?=
+ =?us-ascii?Q?qxFDfjdM5OYyPHkrMcUnUhYxVLvu5Wt7seJqd2SuT8dXRbVv8w6GRHsH/TM3?=
+ =?us-ascii?Q?RroYwb9gSfyX7yzPe9oJdR5Xt4wH+XhtcKFStye6MBHjAGy7qCGwe3uSCoTo?=
+ =?us-ascii?Q?x2XFBQUMAqOjYN26DIdgwfvpb5Sd+sSSWYBxpcHWQmJd8DVpLgfGSDmxseyx?=
+ =?us-ascii?Q?9lCV8VB8iB/gJqF5gDAO301LIyLjOg1fyv+Us9PQcYpShhAFjD6mfuyy1m7I?=
+ =?us-ascii?Q?nSLFpUlYi3FWli/FRx1G7jwu3elsCodqM+hGS3tb4zYwZnHy7yNTHnyGaROU?=
+ =?us-ascii?Q?drK1vZ209Pe3XENnu6ozrrRnQzp0cGcPJjztLqREM4IA43zGqJsqXsrLf7It?=
+ =?us-ascii?Q?kaJi8kNac3JlcEJznX4k3hcp4/8PWZ9ojcvu/mQZ378FwD06Ll+dktuMRPc8?=
+ =?us-ascii?Q?1QTF+bWs+Rcj1Fv8uElvY+pRm1wOrltVoW/v+w0y5dzxc1rLdLeoJZeC5OpK?=
+ =?us-ascii?Q?ALoYgckcVqC68nMf/czTQ5VBaev6MDmpM8wVLfqobxWYUE/5vQpyUdf4Ri55?=
+ =?us-ascii?Q?y+YhJsxKJ+rMzCY=3D?=
+X-Forefront-Antispam-Report-Untrusted: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV0P278MB1766.CHEP278.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(8096899003)(7053199007)(13003099007)(38070700021);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-Original-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-Original-0: =?Windows-1252?Q?tSBQVnMflQxtH1SUNSz0usADgC6uPIcy6fGlQrmFYLEfruomETKuWe63?=
+ =?Windows-1252?Q?RA0QYtztHh+HZKHF5j4P3TRy/NKCdegGI0wF8+SrzlszW/b1M5syDJBQ?=
+ =?Windows-1252?Q?Vc0PD3SV/mYnNuyPROTmqmZbQ0m9R/4nNHeSuN0UO5JpZQLiF32wXOd2?=
+ =?Windows-1252?Q?NDTbkwRuR7oJGQvttTul++tizTOHRFVuiEt4FmgFxGgT5wOsvtyByosz?=
+ =?Windows-1252?Q?vZDwuIf6Y3ppJa3mgi5aiO2E/xTV9pepEtZ2LoUHSTNJkD7ew59TSB1J?=
+ =?Windows-1252?Q?AkXAlYhGZ/QtWCsVO7w2SiX3SNHh6TY4LHUQ8ewqbrKE45aP/sE++Cev?=
+ =?Windows-1252?Q?BhtH0LRTIPESFViLUrnEMTq4M/xi6KCjDA4ksYF/MLixsH3YefEzyufI?=
+ =?Windows-1252?Q?XsN+gvkmeOlzhlYMm6IR9SPIeCW0JzM7SXiVoS9Kp5/nqM9lq55cuXmA?=
+ =?Windows-1252?Q?Klg6w1jfIEtW7Jo1y8OIquT/9ecf8DnyCfmpriN+Vi7I8IJHAtkg6pSm?=
+ =?Windows-1252?Q?Tl7OmKsBrCFo9yiGXoFTqZRco7M7Itca/5nmZCKsP6dn56QX+pU5U4XE?=
+ =?Windows-1252?Q?wFATVyDyBacSbh7plkC4qMZnbXafBo50UuHPImrqr+PeDLXJw/2aIwbo?=
+ =?Windows-1252?Q?0+V4BfmbDDagIlPf3JmtTMdlRaQ3e1MfmRL+3skKNVRxvt6TuaBJceb2?=
+ =?Windows-1252?Q?RNMe37cc+6wYjnq5FyTiRe/a/dlr/EBRcnRbQKoHuIIB3Tis3b7+95SO?=
+ =?Windows-1252?Q?dmRM05HFqNgvvtvalwVZP2jcp6meNiGM0w3pgqQA/V93tKretP5rqcot?=
+ =?Windows-1252?Q?f6ajE+MTXlN0KSsaYyfyPH5CEqQTJfJ1kVc6b2REaFTRSXjYZqCC9xjm?=
+ =?Windows-1252?Q?ASG5Jiw0NK6G+XeVD4l3RuvmRgd3OYIwoK4ZICqF419zz3xzRuABuMmO?=
+ =?Windows-1252?Q?Zd9lX2KMU/LULho8xd8qoEpkobiiGk+6qpmmee9tlTJB9Jys+QamwjKr?=
+ =?Windows-1252?Q?ss601f0YaUhFaNnN/78iVGJj++q7vpuXP4YSUaBAuUXJvi3QjwWGO1yx?=
+ =?Windows-1252?Q?YQ9TOW0UcitpoxVnsVINTwoV7jVy+lfQ3I2ZTFxSprlsBtiv2R/qZu6j?=
+ =?Windows-1252?Q?hrMl5/ewZi1zjBjG+j5L/ET7BmrR/sTq2C28H/+zUNA4OlIxHgob9hOq?=
+ =?Windows-1252?Q?YBDNslvIpYrK2ARtZ72PQtKIASwomb0hGcz0o00gw5WvqWDLQiwunwar?=
+ =?Windows-1252?Q?ZWj5c7s+P17DD3hY49hdxdGMYhLhgxdCI3T4lEcqI0b0jdkE3o8MWhNs?=
+ =?Windows-1252?Q?MWRt0x1cFUX9VWrdxY989pInPJnFybCGwOIx9v0Ny8C2hjuyY05Tt/f5?=
+ =?Windows-1252?Q?Bbiujlx6Cph1cbXCHusxVHi8wL4ej/MVC3AGBgliSQ+AfpnRYHbwX50j?=
+ =?Windows-1252?Q?GD+IIF99OxF83xt/xJrJVSKkYckAh4KksCFPaxLE7rhOwla3bJoaO5Rq?=
+ =?Windows-1252?Q?DRTPytexU/2T9D8QDKOLGu3xx2VCq0Q/iEsHPuttVUlhfi9WPPJLL/5S?=
+ =?Windows-1252?Q?JP3gDS9kOfy/L3qvW0JiwGV8+HXy9FnYhKOShbCGn5Pn03GX+/q6JNDZ?=
+ =?Windows-1252?Q?9/C91U4DaN9+8MrSpRNa5ND5orhV4p1dARmom7u0GBhPt9fHpKOpCDAQ?=
+ =?Windows-1252?Q?KpMvniEpXiQVfRH+o9u+jOGtYv8XVhEV?=
+Content-Type: multipart/alternative;
+	boundary="_000_GV0P278MB17665B57FDDBBB907AB355C2E2F2AGV0P278MB1766CHEP_"
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV0P278MB1125
+X-Virus-Scanned: by bsmtpd at unilu.ch
+X-Barracuda-Connect: mail2.unilu.ch[147.88.247.29]
+X-Barracuda-Start-Time: 1761049942
+X-Barracuda-Encrypted: TLS_AES_256_GCM_SHA384
+X-Barracuda-URL: https://147.88.201.244:443/cgi-mod/mark.cgi
+X-Virus-Scanned: by bsmtpd at hslu.ch
+X-Barracuda-Scan-Msg-Size: 73505
+X-Barracuda-BRTS-Status: 1
+X-Barracuda-Spam-Score: 0.00
+X-Barracuda-Spam-Status: No, SCORE=0.00 using global scores of TAG_LEVEL=1000.0 QUARANTINE_LEVEL=1000.0 KILL_LEVEL=5.5 tests=HTML_MESSAGE
+X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.3.148969
+	Rule breakdown below
+	 pts rule name              description
+	---- ---------------------- --------------------------------------------------
+	0.00 HTML_MESSAGE           BODY: HTML included in message
+Return-Path: btv1==389f72e2869==lukas.schmid@unilu.ch
+X-MS-Exchange-Organization-ExpirationStartTime: 21 Oct 2025 12:32:24.8582
+ (UTC)
+X-MS-Exchange-Organization-ExpirationStartTimeReason: OriginalSubmit
+X-MS-Exchange-Organization-ExpirationInterval: 1:00:00:00.0000000
+X-MS-Exchange-Organization-ExpirationIntervalReason: OriginalSubmit
+X-MS-Exchange-Organization-Network-Message-Id: 1f856b5a-1275-4974-afdf-08de109de3a8
+X-EOPAttributedMessage: 0
+X-EOPTenantAttributedMessage: 75a34008-d7d1-4924-8e78-31fea86f6e68:0
+X-MS-Exchange-Organization-MessageDirectionality: Incoming
+X-MS-Exchange-SkipListedInternetSender: ip=[147.88.247.29];domain=mail2.unilu.ch
+X-MS-Exchange-ExternalOriginalInternetSender: ip=[147.88.247.29];domain=mail2.unilu.ch
+X-MS-Exchange-Transport-CrossTenantHeadersStripped: DU2PEPF00028D0B.eurprd03.prod.outlook.com
+X-MS-PublicTrafficType: Email
+X-MS-Exchange-Organization-AuthSource: DU2PEPF00028D0B.eurprd03.prod.outlook.com
+X-MS-Exchange-Organization-AuthAs: Anonymous
+X-MS-Office365-Filtering-Correlation-Id-Prvs: c32c884b-9b36-45e8-8226-08de109ddf8c
+X-MS-Exchange-AtpMessageProperties: SA|SL
+X-MS-Exchange-Organization-SCL: 1
+X-Microsoft-Antispam: BCL:0;ARA:13230040|82310400026|35042699022|8096899003|7053199007|13003099007;
+X-Forefront-Antispam-Report: CIP:147.88.201.244;CTRY:CH;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail2.unilu.ch;PTR:mail2.unilu.ch;CAT:NONE;SFS:(13230040)(82310400026)(35042699022)(8096899003)(7053199007)(13003099007);DIR:INB;
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Oct 2025 12:32:24.7303
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1f856b5a-1275-4974-afdf-08de109de3a8
+X-MS-Exchange-CrossTenant-Id: 75a34008-d7d1-4924-8e78-31fea86f6e68
+X-MS-Exchange-CrossTenant-AuthSource: DU2PEPF00028D0B.eurprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: Internet
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV0P278MB1897
+X-MS-Exchange-Transport-EndToEndLatency: 00:00:04.0397084
+X-MS-Exchange-Processed-By-BccFoldering: 15.20.9253.009
+X-Microsoft-Antispam-Mailbox-Delivery:
+	ucf:0;jmr:0;auth:0;dest:I;ENG:(910005)(944506478)(944626604)(920097)(930097)(140003);
+X-Microsoft-Antispam-Message-Info:
+	=?Windows-1252?Q?lJABEuKIB0+0lK6CAiGmv6aIgaBIV2sfiMtl5x+X0F6chljPEWDWIrir?=
+ =?Windows-1252?Q?h7B+JsO9VDUhUu4GRvNYOU79nhtX0QrlxLWqado7krSWofePoIvTAGwx?=
+ =?Windows-1252?Q?9t2zlN38+mPzJjee/N/LyBegPAHbUo+E/wNECcE3jnwxLcQ6qCI4MlrS?=
+ =?Windows-1252?Q?JGkk2ZGFLluYchX2M2bycXkZwZ7UODu0TSWoxkl4rbnArtAt78EtuPsj?=
+ =?Windows-1252?Q?vKhTDrjPJLveZNm9a6wiVAy/1cf667u7vmgggKOeOxJGCjMzr58Ajpxj?=
+ =?Windows-1252?Q?ZNj6AvGKDxxO6rXNunVR6Jz9aaficabrx+WiVGEYT3mOGge+2UECRttg?=
+ =?Windows-1252?Q?8WIONjGcjPRefMEqahmjK0GvEDlUvDpN41JIVd3sDyvGQ9LKy700roPX?=
+ =?Windows-1252?Q?DFzan7ISatiYWALhmfEEXJeL8BB9+0R8MfZGDs1YNFnjC0fxUImqppJy?=
+ =?Windows-1252?Q?I1dKWO9fLtAGtmwVcE+/lQoa0+wgkhktSg7WOy1mTV4p/CPI803FzCTs?=
+ =?Windows-1252?Q?5BtLee2HYe/mBpM+qiJ67OEPn3ZLtEnfauf83bNUK0dvfjELzfcsrNrz?=
+ =?Windows-1252?Q?9tOZzwEyPMyjZqwVv8sXGnXUCI0CBQhGPrbFZNWbEXUbrnKtO+hSvaaG?=
+ =?Windows-1252?Q?K1+l4gP1rCADrJUMt2e9qJKBBQD4TxbbvwVullUKpR4JCEfS2wA76JOo?=
+ =?Windows-1252?Q?GbYQ29VDHvzqGF3Ce6QzMblaiyxuoNSebGC+rMYGB++8zNJzyEJF6Z11?=
+ =?Windows-1252?Q?L3iNnLvyKPtCAkv0ZXnWV7Afv4t7fA0lzwz3/Dq3PwKepLf5aRa588Xs?=
+ =?Windows-1252?Q?RKisytUw/JVrfkLLbHfiRC0d+1Tk/ek1HLJNLecpxkqvd0jACR1+W5hQ?=
+ =?Windows-1252?Q?z5kx9nNcPFHM7+aL1RU3cA/wQwjJvTjKj+IMLM30gr4Tq75UfBSbQmEF?=
+ =?Windows-1252?Q?sUTuDsmEI83VA9XeH4WzhTjz2J8KOTJQqLigN2Sm8300xIK+mNAfgcwQ?=
+ =?Windows-1252?Q?t6djODvvyPFGOpfFmq7Cc0cm6cAoVLxVfOGcyyFMnA6EtyTUPFV2EutZ?=
+ =?Windows-1252?Q?F/ETUOtQnE3/x0EF/smVI/bJa4POl95DXhDQsKaG4f82kTnEioXU57I7?=
+ =?Windows-1252?Q?yT6D+4tHERCEbBhpl9dDqn32apOpD1HiDE0VIZayQwGljF42qu4fg5q6?=
+ =?Windows-1252?Q?25L/Hq4yldHx2N6UYXFu5ij1R4NvQUm9OwS7qrCi3dG1LQM+R/GAWmCl?=
+ =?Windows-1252?Q?dIpa2wjopjhcWngCZ2fQOe+DQ0VizUoVPogv2sqB+Q13S/47nZd/UOrH?=
+ =?Windows-1252?Q?NBMqkGZDC5+X22S5GOVTfjvMVGhDctb6oa0/ODVNFtpVA7FSgdNjXedw?=
+ =?Windows-1252?Q?Pre7rBm1saeBN6u4LwATsDyJ0GdI8l8ZoFGVdB/vHaEiSY/cd7rjecrn?=
+ =?Windows-1252?Q?d2SxxVEYyHVhWFfQDuq1jdo0RilhnBn5d/pAHo4feqcvYXc71nhJXe+T?=
+ =?Windows-1252?Q?cekzXojEX7DL8OnEsWd6LlDOQKo+/39pwGxpbNywz8DGz06C2J8ZSdHx?=
+ =?Windows-1252?Q?QBQtNABLc6A+0RC7N7StDH9cceLaU4xlz0JdvEtznl5OJ1nfYfInm745?=
+ =?Windows-1252?Q?suC+GKkVuLlpVdLQ2Ve1qGUIsKUwiNPTxlukRef2ccJI2dTNAr09Abfn?=
+ =?Windows-1252?Q?YobpUQKs7LaJBnJldKyINBvGcUTCuOIh1TCMWkAWahyfL8NBTmmdNWW4?=
+ =?Windows-1252?Q?NpYTwsvsMqU6TfM9IBqozd/cL+/VljaIzQYy91Td3xBqJLWn8CWnB15M?=
+ =?Windows-1252?Q?OmGyGaMDmY95/kA6sT222pqcCbvII8NEwFjFiPU7JnepSQQWmDHbKhCo?=
+ =?Windows-1252?Q?hMvXMboHqODoEUbstrPkl7NPDyDuP8B0kQeKX+gMe/cTkTI3GrVZCwEG?=
+ =?Windows-1252?Q?R5tm9tEOaPYI3ET6Rtan9Fu/pLNXK0V5z4Ilc3oG3dLTfqxYvrhVece0?=
+ =?Windows-1252?Q?hSMF394vbKaWGNtoM0x3QDEoPkxvbT8cNnWUwckRaBxb+BMc3/cUNaJJ?=
+ =?Windows-1252?Q?d9bwvGVahOETHZEXXcluwuqa1OAaTU7Ls4k47rSyL64gvwT9LNOChtOv?=
+ =?Windows-1252?Q?GgXn4UlHYkzEvf/3uJK62/sruM6u3TVPJav4VKqDyfZcQMRowDUQFVOM?=
+ =?Windows-1252?Q?liZnkaSGGJ1V9GBjlbDM33VwbAhbUwKIzBtiVNojtP2bcr07KAPyvtkJ?=
+ =?Windows-1252?Q?g9FeCfmSV8AFRmoGlTI=3D?=
+MIME-Version: 1.0
+
+--_000_GV0P278MB17665B57FDDBBB907AB355C2E2F2AGV0P278MB1766CHEP_
+Content-Type: text/plain; charset="Windows-1252"
+Content-Transfer-Encoding: quoted-printable
+
+Dear Camilo,
+
+Many thanks. I could not look at all of it but it seems like a good pre-stu=
+dy. Maybe you can think a bit more about potential project risks. I also li=
+ke that you include more than only one outcome variable.
+
+Best,
+Lukas
+
+
+Von: Aranguren Barragan Camilo Andres W.MSCIDS.2401 <camilo.arangurenbarrag=
+an@stud.hslu.ch>
+Gesendet: Dienstag, 21. Oktober 2025 13:50
+An: Schmid Lukas D. <lukas.schmid@unilu.ch>
+Betreff: Re: =93Estimation of the Incumbency Advantage=94 Project
+
+
+Dear Lukas,
+
+Attached you will find the final draft of my preliminary study. I hope it a=
+ligns with your expectations. I realize there isn=92t much time left for fu=
+rther changes, but if you have any suggestions, I=92d be happy to incorpora=
+te them by Friday.
+
+For your information, I had a short conversation with Prof. Staubli regardi=
+ng the research questions, which led to the version included in this draft.
+
+Best regards,
+Camilo
+
+
+From: Schmid Lukas D. <lukas.schmid@unilu.ch<mailto:lukas.schmid@unilu.ch>>
+Date: Sunday, 12. October 2025 at 19:27
+To: Aranguren Barragan Camilo Andres W.MSCIDS.2401 <camilo.arangurenbarraga=
+n@stud.hslu.ch<mailto:camilo.arangurenbarragan@stud.hslu.ch>>
+Subject: AW: =93Estimation of the Incumbency Advantage=94 Project
+Dear Camilo,
+
+Sounds great regarding the co-supervisor. Here are the link to the datasets=
+:
+
+https://www.dropbox.com/scl/fi/g02so4s89eax1zwmbf2xr/Spain_master_2004-2023=
+.dta?rlkey=3Dygcrhojwbdyamczg2ij48g1fi&dl=3D0
+
+https://www.dropbox.com/scl/fi/ivcowb1dug7nlmiqaxcse/Spain_final_2004-2019_=
+R.csv?rlkey=3Df25a8djjoio5dhcrys2o4k1mh&dl=3D0
+
+The second dataset includes the variable =93votemargin=94 which is the runn=
+ing variable (more specifically, it should be: votemargin/eligible voters i=
+n a district). Note that the votemargin is only calculated until 2019 but I=
+ will give you the results up until 2023 (I need to implement this).
+
+Best,
+Lukas
+
+Von: Aranguren Barragan Camilo Andres W.MSCIDS.2401 <camilo.arangurenbarrag=
+an@stud.hslu.ch<mailto:camilo.arangurenbarragan@stud.hslu.ch>>
+Gesendet: Samstag, 11. Oktober 2025 06:36
+An: Schmid Lukas D. <lukas.schmid@unilu.ch<mailto:lukas.schmid@unilu.ch>>
+Betreff: Re: =93Estimation of the Incumbency Advantage=94 Project
+
+
+Dear Lukas,
+
+
+
+I already have a co-supervisor =97 Professor Staubli =97 and I think it's g=
+reat.
+
+On another note, I wanted to ask if it would be possible to get access to t=
+he data in the next few days.
+
+
+
+Kind regards,
+
+Camilo
+
+
+Gesendet von Outlook f=FCr iOS<https://aka.ms/o0ukef>
+________________________________
+Von: Schmid Lukas D. <lukas.schmid@unilu.ch<mailto:lukas.schmid@unilu.ch>>
+Gesendet: Thursday, October 2, 2025 9:15:32 PM
+An: Aranguren Barragan Camilo Andres W.MSCIDS.2401 <camilo.arangurenbarraga=
+n@stud.hslu.ch<mailto:camilo.arangurenbarragan@stud.hslu.ch>>
+Betreff: AW: =93Estimation of the Incumbency Advantage=94 Project
+
+
+Dear Camilo,
+
+No worries =96 please find the complete NDA attached.
+
+Best,
+
+Lukas
+
+
+
+
+
+Von: Aranguren Barragan Camilo Andres W.MSCIDS.2401 <camilo.arangurenbarrag=
+an@stud.hslu.ch<mailto:camilo.arangurenbarragan@stud.hslu.ch>>
+Gesendet: Donnerstag, 2. Oktober 2025 20:36
+An: Schmid Lukas D. <lukas.schmid@unilu.ch<mailto:lukas.schmid@unilu.ch>>
+Betreff: Re: =93Estimation of the Incumbency Advantage=94 Project
+
+
+
+Dear Lukas,
+
+
+
+Yes, of course. Sorry for that
+
+
+
+Best,
+
+Camilo
+
+
+
+From: Schmid Lukas D. <lukas.schmid@unilu.ch<mailto:lukas.schmid@unilu.ch>>
+Date: Wednesday, 1. October 2025 at 17:47
+To: Aranguren Barragan Camilo Andres W.MSCIDS.2401 <camilo.arangurenbarraga=
+n@stud.hslu.ch<mailto:camilo.arangurenbarragan@stud.hslu.ch>>
+Subject: AW: =93Estimation of the Incumbency Advantage=94 Project
+
+Dear Camilo,
+
+Many thanks. Do you have a pdf? I cannot open it b/c I do not have a Mac.
+
+Best,
+
+Lukas
+
+
+
+Von: Aranguren Barragan Camilo Andres W.MSCIDS.2401 <camilo.arangurenbarrag=
+an@stud.hslu.ch<mailto:camilo.arangurenbarragan@stud.hslu.ch>>
+Gesendet: Mittwoch, 1. Oktober 2025 17:06
+An: Schmid Lukas D. <lukas.schmid@unilu.ch<mailto:lukas.schmid@unilu.ch>>
+Betreff: Re: =93Estimation of the Incumbency Advantage=94 Project
+
+
+
+Dear Lukas,
+
+
+
+Please find attached the signed NDA.
+
+
+
+Best,
+
+Camilo
+
+
+
+From: Aranguren Barragan Camilo Andres W.MSCIDS.2401 <camilo.arangurenbarra=
+gan@stud.hslu.ch<mailto:camilo.arangurenbarragan@stud.hslu.ch>>
+Date: Tuesday, 30. September 2025 at 11:36
+To: camilo.aranguren@roche.com<mailto:camilo.aranguren@roche.com> <camilo.a=
+ranguren@roche.com<mailto:camilo.aranguren@roche.com>>
+Subject: Fw: =93Estimation of the Incumbency Advantage=94 Project
+
+
+
+
+
+Gesendet von Outlook f=FCr iOS<https://aka.ms/o0ukef>
+
+________________________________
+
+Von: Schmid Lukas D. <lukas.schmid@unilu.ch<mailto:lukas.schmid@unilu.ch>>
+Gesendet: Tuesday, September 30, 2025 11:27:09 AM
+An: Aranguren Barragan Camilo Andres W.MSCIDS.2401 <camilo.arangurenbarraga=
+n@stud.hslu.ch<mailto:camilo.arangurenbarragan@stud.hslu.ch>>
+Betreff: AW: =93Estimation of the Incumbency Advantage=94 Project
+
+
+
+Dear Camilo,
+
+Please find the NDA attached.
+
+Best,
+
+Lukas
+
+
+
+
+
+Von: Aranguren Barragan Camilo Andres W.MSCIDS.2401 <camilo.arangurenbarrag=
+an@stud.hslu.ch<mailto:camilo.arangurenbarragan@stud.hslu.ch>>
+Gesendet: Dienstag, 30. September 2025 09:31
+An: Schmid Lukas D. <lukas.schmid@unilu.ch<mailto:lukas.schmid@unilu.ch>>
+Betreff: Re: =93Estimation of the Incumbency Advantage=94 Project
+
+
+
+Dear Lukas,
+
+
+
+Could you please send me a link for our call?
+
+
+
+Thank you in advance
+
+
+
+Gesendet von Outlook f=FCr iOS<https://aka.ms/o0ukef>
+
+________________________________
+
+Von: Schmid Lukas D. <lukas.schmid@unilu.ch<mailto:lukas.schmid@unilu.ch>>
+Gesendet: Tuesday, September 23, 2025 6:02:47 PM
+An: Aranguren Barragan Camilo Andres W.MSCIDS.2401 <camilo.arangurenbarraga=
+n@stud.hslu.ch<mailto:camilo.arangurenbarragan@stud.hslu.ch>>
+Betreff: AW: =93Estimation of the Incumbency Advantage=94 Project
+
+
+
+Dear Camilo,
+
+Sounds great =96 of course. I am in Norway but how about next Tuesday 30 Se=
+ptember at 11am?
+
+Best,
+
+Lukas
+
+
+
+Von: Aranguren Barragan Camilo Andres W.MSCIDS.2401 <camilo.arangurenbarrag=
+an@stud.hslu.ch<mailto:camilo.arangurenbarragan@stud.hslu.ch>>
+Gesendet: Dienstag, 23. September 2025 17:55
+An: Schmid Lukas D. <lukas.schmid@unilu.ch<mailto:lukas.schmid@unilu.ch>>
+Betreff: Re: =93Estimation of the Incumbency Advantage=94 Project
+
+
+
+Dear Lukas,
+
+The university break is over, and I have just started working on the prelim=
+inary study. I=92ve reviewed the material you shared with me and noted a fe=
+w questions. Would you have about 30 minutes in the coming days or weeks to=
+ help me clarify them?
+
+Best regards,
+Camilo
+
+
+
+From: Schmid Lukas D. <lukas.schmid@unilu.ch<mailto:lukas.schmid@unilu.ch>>
+Date: Friday, 20. June 2025 at 13:50
+To: Aranguren Barragan Camilo Andres W.MSCIDS.2401 <camilo.arangurenbarraga=
+n@stud.hslu.ch<mailto:camilo.arangurenbarragan@stud.hslu.ch>>
+Subject: AW: =93Estimation of the Incumbency Advantage=94 Project
+
+Dear Camilo,
+
+
+
+I completely forgot our paper on measuring closeness in proportional system=
+s:
+
+
+
+https://www.cambridge.org/core/journals/political-analysis/article/measurin=
+g-closeness-in-proportional-representation-systems/C033EC7E886BAEEC6163A718=
+D2D824A6
+
+
+
+
+
+Best,
+
+Lukas
+
+
+
+
+
+
+
+
+
+Von: Schmid Lukas D.
+Gesendet: Freitag, 20. Juni 2025 11:31
+An: Aranguren Barragan Camilo Andres W.MSCIDS.2401 <camilo.arangurenbarraga=
+n@stud.hslu.ch<mailto:camilo.arangurenbarragan@stud.hslu.ch>>
+Betreff: AW: =93Estimation of the Incumbency Advantage=94 Project
+
+
+
+Dear Camilo,
+
+
+
+This is a great introduction to the regression discontinuity design: https:=
+//theeffectbook.net/ch-RegressionDiscontinuity.html. You will also find cod=
+e in different programming languages there.
+
+
+
+And this is the package that we use to combine politicians over time: https=
+://linktransformer.github.io/.
+
+
+
+Best,
+
+Lukas
+
+
+
+
+
+Von: Aranguren Barragan Camilo Andres W.MSCIDS.2401 <camilo.arangurenbarrag=
+an@stud.hslu.ch<mailto:camilo.arangurenbarragan@stud.hslu.ch>>
+Gesendet: Freitag, 20. Juni 2025 11:12
+An: Schmid Lukas D. <lukas.schmid@unilu.ch<mailto:lukas.schmid@unilu.ch>>
+Betreff: Re: =93Estimation of the Incumbency Advantage=94 Project
+
+
+
+Dear Lukas,
+
+
+
+I am so sorry. I was in a meeting at work and got the notification for our =
+meeting but couldn't scape fast enough. I'm in the meeting if you are still=
+ available
+
+
+
+Gesendet von Outlook f=FCr iOS<https://aka.ms/o0ukef>
+
+________________________________
+
+Von: Schmid Lukas D. <lukas.schmid@unilu.ch<mailto:lukas.schmid@unilu.ch>>
+Gesendet: Friday, June 20, 2025 11:08:16 AM
+An: Aranguren Barragan Camilo Andres W.MSCIDS.2401 <camilo.arangurenbarraga=
+n@stud.hslu.ch<mailto:camilo.arangurenbarragan@stud.hslu.ch>>
+Betreff: AW: =93Estimation of the Incumbency Advantage=94 Project
+
+
+
+Dear Camilo Aranguren,
+
+I am in the meeting.
+
+Best,
+
+Lukas
+
+
+
+
+
+Von: Aranguren Barragan Camilo Andres W.MSCIDS.2401 <camilo.arangurenbarrag=
+an@stud.hslu.ch<mailto:camilo.arangurenbarragan@stud.hslu.ch>>
+Gesendet: Dienstag, 3. Juni 2025 09:04
+An: Schmid Lukas D. <lukas.schmid@unilu.ch<mailto:lukas.schmid@unilu.ch>>
+Betreff: Re: =93Estimation of the Incumbency Advantage=94 Project
+
+
+
+Thank you!
+
+
+
+Gesendet von Outlook f=FCr iOS<https://aka.ms/o0ukef>
+
+________________________________
+
+Von: Schmid Lukas D. <lukas.schmid@unilu.ch<mailto:lukas.schmid@unilu.ch>>
+Gesendet: Tuesday, June 3, 2025 8:46:59 AM
+An: Aranguren Barragan Camilo Andres W.MSCIDS.2401 <camilo.arangurenbarraga=
+n@stud.hslu.ch<mailto:camilo.arangurenbarragan@stud.hslu.ch>>
+Betreff: AW: =93Estimation of the Incumbency Advantage=94 Project
+
+
+
+Dear Camilo,
+
+
+
+Great. Here is the Zoom link:
+
+https://unilu.zoom.us/j/2031919964?pwd=3DNWtYcUZYMHFRVlhoZFI4dnpFM1NFZz09
+
+
+
+Best,
+
+Lukas
+
+Von: Aranguren Barragan Camilo Andres W.MSCIDS.2401 <camilo.arangurenbarrag=
+an@stud.hslu.ch<mailto:camilo.arangurenbarragan@stud.hslu.ch>>
+Gesendet: Sonntag, 1. Juni 2025 18:17
+An: Schmid Lukas D. <lukas.schmid@unilu.ch<mailto:lukas.schmid@unilu.ch>>
+Betreff: Re: =93Estimation of the Incumbency Advantage=94 Project
+
+
+
+Dear Lukas,
+
+
+
+Perfect.
+
+
+
+Will you send me the Zoom link?
+
+
+
+Best regards,
+
+Camilo
+
+
+
+Gesendet von Outlook f=FCr iOS<https://aka.ms/o0ukef>
+
+________________________________
+
+Von: Schmid Lukas D. <lukas.schmid@unilu.ch<mailto:lukas.schmid@unilu.ch>>
+Gesendet: Sunday, June 1, 2025 3:16:43 PM
+An: Aranguren Barragan Camilo Andres W.MSCIDS.2401 <camilo.arangurenbarraga=
+n@stud.hslu.ch<mailto:camilo.arangurenbarragan@stud.hslu.ch>>
+Betreff: AW: =93Estimation of the Incumbency Advantage=94 Project
+
+
+
+Dear Camilo Aranguren,
+
+How about June 20 at 11am?
+
+Best,
+
+Lukas
+
+
+
+
+
+Von: Aranguren Barragan Camilo Andres W.MSCIDS.2401 <camilo.arangurenbarrag=
+an@stud.hslu.ch<mailto:camilo.arangurenbarragan@stud.hslu.ch>>
+Gesendet: Sonntag, 1. Juni 2025 15:16
+An: Schmid Lukas D. <lukas.schmid@unilu.ch<mailto:lukas.schmid@unilu.ch>>
+Betreff: Re: =93Estimation of the Incumbency Advantage=94 Project
+
+
+
+Yes, that would be great.
+
+
+
+I will have an exam on the 18th but apart from that I am  flexible that Wee=
+k.
+
+
+
+
+
+
+
+
+
+
+
+Gesendet von Outlook f=FCr iOS<https://aka.ms/o0ukef>
+
+________________________________
+
+Von: Schmid Lukas D. <lukas.schmid@unilu.ch<mailto:lukas.schmid@unilu.ch>>
+Gesendet: Sunday, June 1, 2025 3:09:35 PM
+An: Aranguren Barragan Camilo Andres W.MSCIDS.2401 <camilo.arangurenbarraga=
+n@stud.hslu.ch<mailto:camilo.arangurenbarragan@stud.hslu.ch>>
+Betreff: AW: =93Estimation of the Incumbency Advantage=94 Project
+
+
+
+Dear Camilo Aranguren,
+
+This sounds great =96 many thanks for contacting me. Can we meet on Zoom in=
+ the week of June 16?
+
+Best,
+
+Lukas
+
+
+
+
+
+Von: Aranguren Barragan Camilo Andres W.MSCIDS.2401 <camilo.arangurenbarrag=
+an@stud.hslu.ch<mailto:camilo.arangurenbarragan@stud.hslu.ch>>
+Gesendet: Samstag, 31. Mai 2025 11:21
+An: Schmid Lukas D. <lukas.schmid@unilu.ch<mailto:lukas.schmid@unilu.ch>>
+Betreff: =93Estimation of the Incumbency Advantage=94 Project
+
+
+
+Dear Professor Schmid,
+
+I hope this message finds you well. I recently came across your proposed pr=
+oject =93Estimation of the Incumbency Advantage=94 and was immediately intr=
+igued, even though I understand it was originally intended for a previous s=
+emester.
+
+
+
+Having been born and raised in Colombia, I have always had a strong interes=
+t in both local and international politics. I now live in Germany, where I =
+am a citizen and actively engaged in political activities. The topic of inc=
+umbency advantage resonates strongly with my personal and academic interest=
+s.
+
+
+
+I would be thrilled at the opportunity to contribute to this project, shoul=
+d there still be a possibility to get involved. I have a working knowledge =
+of R and a solid foundation in statistics, and I am eager to deepen my skil=
+ls further through this research.
+
+
+
+Thank you very much for considering my application. I would be happy to pro=
+vide any additional information or discuss the opportunity at your convenie=
+nce.
+
+
+
+Warm regards,
+Camilo Aranguren
+
+
+
+--_000_GV0P278MB17665B57FDDBBB907AB355C2E2F2AGV0P278MB1766CHEP_
+Content-Type: text/html; charset="Windows-1252"
+Content-Transfer-Encoding: quoted-printable
+
+<html xmlns:v=3D"urn:schemas-microsoft-com:vml" xmlns:o=3D"urn:schemas-micr=
+osoft-com:office:office" xmlns:w=3D"urn:schemas-microsoft-com:office:word" =
+xmlns:m=3D"http://schemas.microsoft.com/office/2004/12/omml" xmlns=3D"http:=
+//www.w3.org/TR/REC-html40"><head>
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3DWindows-1=
+252">
+<meta name=3D"Generator" content=3D"Microsoft Word 15 (filtered medium)">
+<!--[if !mso]><style>v\:* {behavior:url(#default#VML);}
+o\:* {behavior:url(#default#VML);}
+w\:* {behavior:url(#default#VML);}
+.shape {behavior:url(#default#VML);}
+</style><![endif]--><style><!--
+/* Font Definitions */
+@font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+@font-face
+	{font-family:Calibri;
+	panose-1:2 15 5 2 2 2 4 3 2 4;}
+@font-face
+	{font-family:Aptos;}
+/* Style Definitions */
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	font-size:12.0pt;
+	font-family:"Aptos",sans-serif;}
+a:link, span.MsoHyperlink
+	{mso-style-priority:99;
+	color:blue;
+	text-decoration:underline;}
+p.wordsection1, li.wordsection1, div.wordsection1
+	{mso-style-name:wordsection1;
+	mso-margin-top-alt:auto;
+	margin-right:0cm;
+	mso-margin-bottom-alt:auto;
+	margin-left:0cm;
+	font-size:12.0pt;
+	font-family:"Aptos",sans-serif;}
+p.xmsonormal, li.xmsonormal, div.xmsonormal
+	{mso-style-name:xmsonormal;
+	mso-margin-top-alt:auto;
+	margin-right:0cm;
+	mso-margin-bottom-alt:auto;
+	margin-left:0cm;
+	font-size:12.0pt;
+	font-family:"Aptos",sans-serif;}
+p.xxxmsonormal, li.xxxmsonormal, div.xxxmsonormal
+	{mso-style-name:xxxmsonormal;
+	mso-margin-top-alt:auto;
+	margin-right:0cm;
+	mso-margin-bottom-alt:auto;
+	margin-left:0cm;
+	font-size:12.0pt;
+	font-family:"Aptos",sans-serif;}
+p.xxmsonormal, li.xxmsonormal, div.xxmsonormal
+	{mso-style-name:xxmsonormal;
+	mso-margin-top-alt:auto;
+	margin-right:0cm;
+	mso-margin-bottom-alt:auto;
+	margin-left:0cm;
+	font-size:12.0pt;
+	font-family:"Aptos",sans-serif;}
+p.xxwordsection1, li.xxwordsection1, div.xxwordsection1
+	{mso-style-name:xxwordsection1;
+	mso-margin-top-alt:auto;
+	margin-right:0cm;
+	mso-margin-bottom-alt:auto;
+	margin-left:0cm;
+	font-size:12.0pt;
+	font-family:"Aptos",sans-serif;}
+p.xxxxxmsonormal, li.xxxxxmsonormal, div.xxxxxmsonormal
+	{mso-style-name:xxxxxmsonormal;
+	mso-margin-top-alt:auto;
+	margin-right:0cm;
+	mso-margin-bottom-alt:auto;
+	margin-left:0cm;
+	font-size:12.0pt;
+	font-family:"Aptos",sans-serif;}
+p.xxxxxxxmsonormal, li.xxxxxxxmsonormal, div.xxxxxxxmsonormal
+	{mso-style-name:xxxxxxxmsonormal;
+	mso-margin-top-alt:auto;
+	margin-right:0cm;
+	mso-margin-bottom-alt:auto;
+	margin-left:0cm;
+	font-size:12.0pt;
+	font-family:"Aptos",sans-serif;}
+p.xxxxmsonormal, li.xxxxmsonormal, div.xxxxmsonormal
+	{mso-style-name:xxxxmsonormal;
+	mso-margin-top-alt:auto;
+	margin-right:0cm;
+	mso-margin-bottom-alt:auto;
+	margin-left:0cm;
+	font-size:12.0pt;
+	font-family:"Aptos",sans-serif;}
+p.xxxxxxmsonormal, li.xxxxxxmsonormal, div.xxxxxxmsonormal
+	{mso-style-name:xxxxxxmsonormal;
+	mso-margin-top-alt:auto;
+	margin-right:0cm;
+	mso-margin-bottom-alt:auto;
+	margin-left:0cm;
+	font-size:12.0pt;
+	font-family:"Aptos",sans-serif;}
+span.E-MailFormatvorlage27
+	{mso-style-type:personal-reply;
+	font-family:"Aptos",sans-serif;
+	color:windowtext;}
+.MsoChpDefault
+	{mso-style-type:export-only;
+	font-size:10.0pt;
+	mso-ligatures:none;}
+@page WordSection1
+	{size:612.0pt 792.0pt;
+	margin:72.0pt 72.0pt 72.0pt 72.0pt;}
+div.WordSection1
+	{page:WordSection1;}
+--></style><!--[if gte mso 9]><xml>
+<o:shapedefaults v:ext=3D"edit" spidmax=3D"1026" />
+</xml><![endif]--><!--[if gte mso 9]><xml>
+<o:shapelayout v:ext=3D"edit">
+<o:idmap v:ext=3D"edit" data=3D"1" />
+</o:shapelayout></xml><![endif]-->
+</head>
+<body lang=3D"DE-CH" link=3D"blue" vlink=3D"purple" style=3D"word-wrap:brea=
+k-word">
+<div class=3D"WordSection1">
+<p class=3D"MsoNormal"><span lang=3D"EN-US" style=3D"font-size:11.0pt">Dear=
+ Camilo,</span><span lang=3D"EN-US"><o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span lang=3D"EN-US" style=3D"font-size:11.0pt">&nbs=
+p;</span><span lang=3D"EN-US"><o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span lang=3D"EN-US" style=3D"font-size:11.0pt">Many=
+ thanks. I could not look at all of it but it seems like a good pre-study. =
+Maybe you can think a bit more about potential project risks. I also like t=
+hat you include more than only one outcome
+ variable. </span><span lang=3D"EN-US"><o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span lang=3D"EN-US" style=3D"font-size:11.0pt">&nbs=
+p;</span><span lang=3D"EN-US"><o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span lang=3D"EN-US" style=3D"font-size:11.0pt">Best=
+,</span><span lang=3D"EN-US"><o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:11.0pt">Lukas</span><o:p></=
+o:p></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:11.0pt;mso-fareast-language=
+:EN-US"><o:p>&nbsp;</o:p></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:11.0pt;mso-fareast-language=
+:EN-US"><o:p>&nbsp;</o:p></span></p>
+<div>
+<div style=3D"border:none;border-top:solid #E1E1E1 1.0pt;padding:3.0pt 0cm =
+0cm 0cm">
+<p class=3D"MsoNormal"><b><span lang=3D"DE" style=3D"font-size:11.0pt;font-=
+family:&quot;Calibri&quot;,sans-serif">Von:</span></b><span lang=3D"DE" sty=
+le=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif"> Arangur=
+en Barragan Camilo Andres W.MSCIDS.2401 &lt;camilo.arangurenbarragan@stud.h=
+slu.ch&gt;
+<br>
+<b>Gesendet:</b> Dienstag, 21. </span><span lang=3D"EN-US" style=3D"font-si=
+ze:11.0pt;font-family:&quot;Calibri&quot;,sans-serif">Oktober 2025 13:50<br=
+>
+<b>An:</b> Schmid Lukas D. &lt;lukas.schmid@unilu.ch&gt;<br>
+<b>Betreff:</b> Re: =93Estimation of the Incumbency Advantage=94 Project<o:=
+p></o:p></span></p>
+</div>
+</div>
+<p class=3D"MsoNormal"><span lang=3D"EN-US"><o:p>&nbsp;</o:p></span></p>
+<p><span lang=3D"EN-US" style=3D"color:black">Dear Lukas,</span><span lang=
+=3D"EN-US"><o:p></o:p></span></p>
+<p><span lang=3D"EN-US" style=3D"color:black">Attached you will find the fi=
+nal draft of my preliminary study. I hope it aligns with your expectations.=
+ I realize&nbsp;there isn=92t much time left for further changes, but if yo=
+u have any suggestions, I=92d be happy to incorporate
+ them by Friday.</span><span lang=3D"EN-US"><o:p></o:p></span></p>
+<p><span lang=3D"EN-US" style=3D"color:black">For your information, I had a=
+ short </span>
+<span lang=3D"EN-US">conversation <span style=3D"color:black">with Prof. St=
+aubli regarding the research questions, which led to the version included i=
+n this draft.</span><o:p></o:p></span></p>
+<p><span lang=3D"EN-US" style=3D"color:black">Best regards,<br>
+Camilo</span><span lang=3D"EN-US"><o:p></o:p></span></p>
+<div>
+<p class=3D"MsoNormal"><span lang=3D"EN-US" style=3D"color:black"><o:p>&nbs=
+p;</o:p></span></p>
+</div>
+<div>
+<p class=3D"MsoNormal"><span lang=3D"EN-US" style=3D"color:black"><o:p>&nbs=
+p;</o:p></span></p>
+</div>
+<div id=3D"mail-editor-reference-message-container">
+<div style=3D"border:none;border-top:solid windowtext 1.0pt;padding:3.0pt 0=
+cm 0cm 0cm;border-color:currentcolor currentcolor">
+<p class=3D"MsoNormal" style=3D"margin-bottom:12.0pt"><b><span lang=3D"EN-U=
+S" style=3D"color:black">From:
+</span></b><span lang=3D"EN-US" style=3D"color:black">Schmid Lukas D. &lt;<=
+/span><a href=3D"mailto:lukas.schmid@unilu.ch"><span lang=3D"EN-US">lukas.s=
+chmid@unilu.ch</span></a><span lang=3D"EN-US" style=3D"color:black">&gt;<br=
+>
+<b>Date: </b>Sunday, 12. October 2025 at 19:27<br>
+<b>To: </b>Aranguren Barragan Camilo Andres W.MSCIDS.2401 &lt;</span><a hre=
+f=3D"mailto:camilo.arangurenbarragan@stud.hslu.ch"><span lang=3D"EN-US">cam=
+ilo.arangurenbarragan@stud.hslu.ch</span></a><span lang=3D"EN-US" style=3D"=
+color:black">&gt;<br>
+<b>Subject: </b>AW: =93Estimation of the Incumbency Advantage=94 Project<o:=
+p></o:p></span></p>
+</div>
+<p class=3D"MsoNormal"><span lang=3D"EN-US" style=3D"font-size:11.0pt">Dear=
+ Camilo,</span><span lang=3D"EN-US"><o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span lang=3D"EN-US" style=3D"font-size:11.0pt">&nbs=
+p;</span><span lang=3D"EN-US"><o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span lang=3D"EN-US" style=3D"font-size:11.0pt">Soun=
+ds great regarding the co-supervisor. Here are the link to the datasets:</s=
+pan><span lang=3D"EN-US"><o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span lang=3D"EN-US" style=3D"font-size:11.0pt">&nbs=
+p;</span><span lang=3D"EN-US"><o:p></o:p></span></p>
+<p class=3D"MsoNormal"><a href=3D"https://www.dropbox.com/scl/fi/g02so4s89e=
+ax1zwmbf2xr/Spain_master_2004-2023.dta?rlkey=3Dygcrhojwbdyamczg2ij48g1fi&am=
+p;dl=3D0"><span lang=3D"EN-US" style=3D"font-size:11.0pt">https://www.dropb=
+ox.com/scl/fi/g02so4s89eax1zwmbf2xr/Spain_master_2004-2023.dta?rlkey=3Dygcr=
+hojwbdyamczg2ij48g1fi&amp;dl=3D0</span></a><span lang=3D"EN-US"><o:p></o:p>=
+</span></p>
+<p class=3D"MsoNormal"><span lang=3D"EN-US" style=3D"font-size:11.0pt">&nbs=
+p;</span><span lang=3D"EN-US"><o:p></o:p></span></p>
+<p class=3D"MsoNormal"><a href=3D"https://www.dropbox.com/scl/fi/ivcowb1dug=
+7nlmiqaxcse/Spain_final_2004-2019_R.csv?rlkey=3Df25a8djjoio5dhcrys2o4k1mh&a=
+mp;dl=3D0"><span lang=3D"EN-US" style=3D"font-size:11.0pt">https://www.drop=
+box.com/scl/fi/ivcowb1dug7nlmiqaxcse/Spain_final_2004-2019_R.csv?rlkey=3Df2=
+5a8djjoio5dhcrys2o4k1mh&amp;dl=3D0</span></a><span lang=3D"EN-US"><o:p></o:=
+p></span></p>
+<p class=3D"MsoNormal"><span lang=3D"EN-US" style=3D"font-size:11.0pt">&nbs=
+p;</span><span lang=3D"EN-US"><o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span lang=3D"EN-US" style=3D"font-size:11.0pt">The =
+second dataset includes the variable =93votemargin=94 which is the running =
+variable (more specifically, it should be: votemargin/eligible voters in a =
+district). Note that the votemargin is only
+ calculated until 2019 but I will give you the results up until 2023 (I nee=
+d to implement this).</span><span lang=3D"EN-US"><o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span lang=3D"EN-US" style=3D"font-size:11.0pt">&nbs=
+p;</span><span lang=3D"EN-US"><o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span lang=3D"EN-US" style=3D"font-size:11.0pt">Best=
+,</span><span lang=3D"EN-US"><o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span lang=3D"EN-US" style=3D"font-size:11.0pt">Luka=
+s</span><span lang=3D"EN-US"><o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span lang=3D"EN-US" style=3D"font-size:11.0pt">&nbs=
+p;</span><span lang=3D"EN-US"><o:p></o:p></span></p>
+<div style=3D"border:none;border-top:solid windowtext 1.0pt;padding:3.0pt 0=
+cm 0cm 0cm;border-color:currentcolor currentcolor">
+<p class=3D"MsoNormal"><b><span lang=3D"EN-US" style=3D"font-size:11.0pt;fo=
+nt-family:&quot;Calibri&quot;,sans-serif">Von:</span></b><span lang=3D"EN-U=
+S" style=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif">&n=
+bsp;Aranguren Barragan Camilo Andres W.MSCIDS.2401 &lt;</span><a href=3D"ma=
+ilto:camilo.arangurenbarragan@stud.hslu.ch"><span lang=3D"EN-US" style=3D"f=
+ont-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif">camilo.arangure=
+nbarragan@stud.hslu.ch</span></a><span lang=3D"EN-US" style=3D"font-size:11=
+.0pt;font-family:&quot;Calibri&quot;,sans-serif">&gt;<br>
+<b>Gesendet:</b>&nbsp;Samstag, 11. Oktober 2025 06:36<br>
+<b>An:</b>&nbsp;Schmid Lukas D. &lt;</span><a href=3D"mailto:lukas.schmid@u=
+nilu.ch"><span lang=3D"EN-US" style=3D"font-size:11.0pt;font-family:&quot;C=
+alibri&quot;,sans-serif">lukas.schmid@unilu.ch</span></a><span lang=3D"EN-U=
+S" style=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif">&g=
+t;<br>
+<b>Betreff:</b>&nbsp;Re: =93Estimation of the Incumbency Advantage=94 Proje=
+ct</span><span lang=3D"EN-US"><o:p></o:p></span></p>
+</div>
+<p class=3D"MsoNormal"><span lang=3D"EN-US">&nbsp;<o:p></o:p></span></p>
+<p class=3D"wordsection1" style=3D"margin-bottom:9.0pt"><span lang=3D"EN-US=
+" style=3D"font-size:14.5pt;font-family:&quot;Times New Roman&quot;,serif;c=
+olor:black">Dear Lukas,</span><span lang=3D"EN-US"><o:p></o:p></span></p>
+<p class=3D"wordsection1" style=3D"margin-bottom:9.0pt;min-height: 13.8px">=
+<span lang=3D"EN-US">&nbsp;<o:p></o:p></span></p>
+<p class=3D"wordsection1" style=3D"margin-bottom:9.0pt"><span lang=3D"EN-US=
+" style=3D"font-size:14.5pt;font-family:&quot;Times New Roman&quot;,serif;c=
+olor:black">I already have a co-supervisor =97 Professor Staubli =97 and I =
+think it's great.</span><span lang=3D"EN-US"><o:p></o:p></span></p>
+<p class=3D"wordsection1" style=3D"margin-bottom:9.0pt"><span lang=3D"EN-US=
+" style=3D"font-size:14.5pt;font-family:&quot;Times New Roman&quot;,serif;c=
+olor:black">On another note, I wanted to ask if it would be possible to get=
+ access to the data in the next few days.</span><span lang=3D"EN-US"><o:p><=
+/o:p></span></p>
+<p class=3D"wordsection1" style=3D"margin-bottom:9.0pt;min-height: 13.8px">=
+<span lang=3D"EN-US">&nbsp;<o:p></o:p></span></p>
+<p class=3D"wordsection1" style=3D"margin-bottom:9.0pt"><span style=3D"font=
+-size:14.5pt;font-family:&quot;Times New Roman&quot;,serif;color:black">Kin=
+d regards,</span><o:p></o:p></p>
+<p class=3D"wordsection1" style=3D"margin-bottom:9.0pt"><span style=3D"font=
+-size:14.5pt;font-family:&quot;Times New Roman&quot;,serif;color:black">Cam=
+ilo</span><o:p></o:p></p>
+<p class=3D"MsoNormal"><span style=3D"color:black">&nbsp;</span><o:p></o:p>=
+</p>
+<p class=3D"MsoNormal">&nbsp;<o:p></o:p></p>
+<div id=3D"ms-outlook-mobile-signature">
+<p class=3D"MsoNormal">Gesendet von <a href=3D"https://aka.ms/o0ukef">Outlo=
+ok f=FCr iOS</a><o:p></o:p></p>
+</div>
+<div class=3D"MsoNormal" align=3D"center" style=3D"text-align:center">
+<hr size=3D"1" width=3D"98%" align=3D"center">
+</div>
+<div id=3D"divRplyFwdMsg">
+<p class=3D"MsoNormal"><b><span lang=3D"EN-US" style=3D"font-size:11.0pt;fo=
+nt-family:&quot;Calibri&quot;,sans-serif;color:black">Von:</span></b><span =
+lang=3D"EN-US" style=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sa=
+ns-serif;color:black">&nbsp;Schmid Lukas D. &lt;</span><a href=3D"mailto:lu=
+kas.schmid@unilu.ch"><span lang=3D"EN-US" style=3D"font-size:11.0pt;font-fa=
+mily:&quot;Calibri&quot;,sans-serif">lukas.schmid@unilu.ch</span></a><span =
+lang=3D"EN-US" style=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sa=
+ns-serif;color:black">&gt;<br>
+<b>Gesendet:</b>&nbsp;Thursday, October 2, 2025 9:15:32 PM<br>
+<b>An:</b>&nbsp;Aranguren Barragan Camilo Andres W.MSCIDS.2401 &lt;</span><=
+a href=3D"mailto:camilo.arangurenbarragan@stud.hslu.ch"><span lang=3D"EN-US=
+" style=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif">cam=
+ilo.arangurenbarragan@stud.hslu.ch</span></a><span lang=3D"EN-US" style=3D"=
+font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif;color:black">&g=
+t;<br>
+<b>Betreff:</b>&nbsp;AW: =93Estimation of the Incumbency Advantage=94 Proje=
+ct</span><span lang=3D"EN-US"><o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span lang=3D"EN-US">&nbsp;<o:p></o:p></span></p>
+</div>
+<p class=3D"xmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US">Dear Cami=
+lo,<o:p></o:p></span></p>
+<p class=3D"xmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US">No worrie=
+s =96 please find the complete NDA attached.<o:p></o:p></span></p>
+<p class=3D"xmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US">Best,<o:p=
+></o:p></span></p>
+<p class=3D"xmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US">Lukas<o:p=
+></o:p></span></p>
+<p class=3D"xmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US" style=3D"=
+font-size:11.0pt">&nbsp;</span><span lang=3D"EN-US"><o:p></o:p></span></p>
+<p class=3D"xmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US" style=3D"=
+font-size:11.0pt">&nbsp;</span><span lang=3D"EN-US"><o:p></o:p></span></p>
+<div style=3D"border:none;border-top:solid windowtext 1.0pt;padding:3.0pt 0=
+cm 0cm 0cm;border-color:currentcolor currentcolor">
+<p class=3D"xmsonormal" style=3D"margin:0cm"><b><span lang=3D"EN-US" style=
+=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif">Von:</span=
+></b><span lang=3D"EN-US" style=3D"font-size:11.0pt;font-family:&quot;Calib=
+ri&quot;,sans-serif">&nbsp;Aranguren Barragan Camilo Andres W.MSCIDS.2401
+ &lt;</span><a href=3D"mailto:camilo.arangurenbarragan@stud.hslu.ch"><span =
+lang=3D"EN-US" style=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sa=
+ns-serif">camilo.arangurenbarragan@stud.hslu.ch</span></a><span lang=3D"EN-=
+US" style=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif">&=
+gt;<br>
+<b>Gesendet:</b>&nbsp;Donnerstag, 2. Oktober 2025 20:36<br>
+<b>An:</b>&nbsp;Schmid Lukas D. &lt;</span><a href=3D"mailto:lukas.schmid@u=
+nilu.ch"><span lang=3D"EN-US" style=3D"font-size:11.0pt;font-family:&quot;C=
+alibri&quot;,sans-serif">lukas.schmid@unilu.ch</span></a><span lang=3D"EN-U=
+S" style=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif">&g=
+t;<br>
+<b>Betreff:</b>&nbsp;Re: =93Estimation of the Incumbency Advantage=94 Proje=
+ct</span><span lang=3D"EN-US"><o:p></o:p></span></p>
+</div>
+<p class=3D"xmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US">&nbsp;<o:=
+p></o:p></span></p>
+<p class=3D"xmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US" style=3D"=
+color:black">Dear Lukas,&nbsp;</span><span lang=3D"EN-US"><o:p></o:p></span=
+></p>
+<p class=3D"xmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US" style=3D"=
+color:black">&nbsp;</span><span lang=3D"EN-US"><o:p></o:p></span></p>
+<p class=3D"xmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US" style=3D"=
+color:black">Yes, of course. Sorry for that</span><span lang=3D"EN-US"><o:p=
+></o:p></span></p>
+<p class=3D"xmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US" style=3D"=
+color:black">&nbsp;</span><span lang=3D"EN-US"><o:p></o:p></span></p>
+<p class=3D"xmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US" style=3D"=
+color:black">Best,</span><span lang=3D"EN-US"><o:p></o:p></span></p>
+<p class=3D"xmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US" style=3D"=
+color:black">Camilo</span><span lang=3D"EN-US"><o:p></o:p></span></p>
+<p class=3D"xmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US" style=3D"=
+color:black">&nbsp;</span><span lang=3D"EN-US"><o:p></o:p></span></p>
+<div id=3D"x_mail-editor-reference-message-container">
+<div style=3D"border:none;border-top:solid windowtext 1.0pt;padding:3.0pt 0=
+cm 0cm 0cm;border-color:currentcolor">
+<p class=3D"xmsonormal" style=3D"margin:0cm"><b><span lang=3D"EN-US" style=
+=3D"color:black">From:
+</span></b><span lang=3D"EN-US" style=3D"color:black">Schmid Lukas D. &lt;<=
+/span><a href=3D"mailto:lukas.schmid@unilu.ch"><span lang=3D"EN-US">lukas.s=
+chmid@unilu.ch</span></a><span lang=3D"EN-US" style=3D"color:black">&gt;<br=
+>
+<b>Date: </b>Wednesday, 1. October 2025 at 17:47<br>
+<b>To: </b>Aranguren Barragan Camilo Andres W.MSCIDS.2401 &lt;</span><a hre=
+f=3D"mailto:camilo.arangurenbarragan@stud.hslu.ch"><span lang=3D"EN-US">cam=
+ilo.arangurenbarragan@stud.hslu.ch</span></a><span lang=3D"EN-US" style=3D"=
+color:black">&gt;<br>
+<b>Subject: </b>AW: =93Estimation of the Incumbency Advantage=94 Project</s=
+pan><span lang=3D"EN-US"><o:p></o:p></span></p>
+</div>
+<p class=3D"xmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US" style=3D"=
+font-size:11.0pt">Dear Camilo,</span><span lang=3D"EN-US"><o:p></o:p></span=
+></p>
+<p class=3D"xmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US" style=3D"=
+font-size:11.0pt">Many thanks. Do you have a pdf? I cannot open it b/c I do=
+ not have a Mac.</span><span lang=3D"EN-US"><o:p></o:p></span></p>
+<p class=3D"xmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US" style=3D"=
+font-size:11.0pt">Best,</span><span lang=3D"EN-US"><o:p></o:p></span></p>
+<p class=3D"xmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US" style=3D"=
+font-size:11.0pt">Lukas</span><span lang=3D"EN-US"><o:p></o:p></span></p>
+<p class=3D"xmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US" style=3D"=
+font-size:11.0pt">&nbsp;</span><span lang=3D"EN-US"><o:p></o:p></span></p>
+<div style=3D"border:none;border-top:solid windowtext 1.0pt;padding:3.0pt 0=
+cm 0cm 0cm;border-color:currentcolor">
+<p class=3D"xmsonormal" style=3D"margin:0cm"><b><span lang=3D"EN-US" style=
+=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif">Von:</span=
+></b><span lang=3D"EN-US" style=3D"font-size:11.0pt;font-family:&quot;Calib=
+ri&quot;,sans-serif">&nbsp;Aranguren Barragan Camilo Andres W.MSCIDS.2401
+ &lt;</span><a href=3D"mailto:camilo.arangurenbarragan@stud.hslu.ch"><span =
+lang=3D"EN-US" style=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sa=
+ns-serif">camilo.arangurenbarragan@stud.hslu.ch</span></a><span lang=3D"EN-=
+US" style=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif">&=
+gt;<br>
+<b>Gesendet:</b>&nbsp;Mittwoch, 1. Oktober 2025 17:06<br>
+<b>An:</b>&nbsp;Schmid Lukas D. &lt;</span><a href=3D"mailto:lukas.schmid@u=
+nilu.ch"><span lang=3D"EN-US" style=3D"font-size:11.0pt;font-family:&quot;C=
+alibri&quot;,sans-serif">lukas.schmid@unilu.ch</span></a><span lang=3D"EN-U=
+S" style=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif">&g=
+t;<br>
+<b>Betreff:</b>&nbsp;Re: =93Estimation of the Incumbency Advantage=94 Proje=
+ct</span><span lang=3D"EN-US"><o:p></o:p></span></p>
+</div>
+<p class=3D"xmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US">&nbsp;<o:=
+p></o:p></span></p>
+<p class=3D"xmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US" style=3D"=
+color:black">Dear Lukas,</span><span lang=3D"EN-US"><o:p></o:p></span></p>
+<p class=3D"xmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US" style=3D"=
+color:black">&nbsp;</span><span lang=3D"EN-US"><o:p></o:p></span></p>
+<p class=3D"xmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US" style=3D"=
+color:black">Please find attached the signed NDA.</span><span lang=3D"EN-US=
+"><o:p></o:p></span></p>
+<p class=3D"xmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US" style=3D"=
+color:black">&nbsp;</span><span lang=3D"EN-US"><o:p></o:p></span></p>
+<p class=3D"xmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US" style=3D"=
+color:black">Best,</span><span lang=3D"EN-US"><o:p></o:p></span></p>
+<p class=3D"xmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US" style=3D"=
+color:black">Camilo</span><span lang=3D"EN-US"><o:p></o:p></span></p>
+<p class=3D"xmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US" style=3D"=
+color:black">&nbsp;</span><span lang=3D"EN-US"><o:p></o:p></span></p>
+<div id=3D"x_mail-editor-reference-message-container">
+<div style=3D"border:none;border-top:solid windowtext 1.0pt;padding:3.0pt 0=
+cm 0cm 0cm;border-color:currentcolor">
+<p class=3D"xmsonormal" style=3D"margin:0cm"><b><span lang=3D"EN-US" style=
+=3D"color:black">From:
+</span></b><span lang=3D"EN-US" style=3D"color:black">Aranguren Barragan Ca=
+milo Andres W.MSCIDS.2401 &lt;</span><a href=3D"mailto:camilo.arangurenbarr=
+agan@stud.hslu.ch"><span lang=3D"EN-US">camilo.arangurenbarragan@stud.hslu.=
+ch</span></a><span lang=3D"EN-US" style=3D"color:black">&gt;<br>
+<b>Date: </b>Tuesday, 30. September 2025 at 11:36<br>
+<b>To: </b></span><a href=3D"mailto:camilo.aranguren@roche.com"><span lang=
+=3D"EN-US">camilo.aranguren@roche.com</span></a><span lang=3D"EN-US" style=
+=3D"color:black">&nbsp;&lt;</span><a href=3D"mailto:camilo.aranguren@roche.=
+com"><span lang=3D"EN-US">camilo.aranguren@roche.com</span></a><span lang=
+=3D"EN-US" style=3D"color:black">&gt;<br>
+<b>Subject: </b>Fw: =93Estimation of the Incumbency Advantage=94 Project</s=
+pan><span lang=3D"EN-US"><o:p></o:p></span></p>
+</div>
+<p class=3D"xmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US">&nbsp;<o:=
+p></o:p></span></p>
+<div id=3D"x_ms-outlook-mobile-body-separator-line">
+<p class=3D"xmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US">&nbsp;<o:=
+p></o:p></span></p>
+</div>
+<div id=3D"x_ms-outlook-mobile-signature">
+<p class=3D"xmsonormal" style=3D"margin:0cm">Gesendet von <a href=3D"https:=
+//aka.ms/o0ukef">
+Outlook f=FCr iOS</a><o:p></o:p></p>
+</div>
+<div class=3D"MsoNormal" align=3D"center" style=3D"text-align:center">
+<hr size=3D"1" width=3D"98%" align=3D"center">
+</div>
+<div id=3D"x_divRplyFwdMsg">
+<p class=3D"xmsonormal" style=3D"margin:0cm"><b><span lang=3D"EN-US" style=
+=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif;color:black=
+">Von:</span></b><span lang=3D"EN-US" style=3D"font-size:11.0pt;font-family=
+:&quot;Calibri&quot;,sans-serif;color:black">&nbsp;Schmid Lukas D. &lt;</sp=
+an><a href=3D"mailto:lukas.schmid@unilu.ch"><span lang=3D"EN-US" style=3D"f=
+ont-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif">lukas.schmid@un=
+ilu.ch</span></a><span lang=3D"EN-US" style=3D"font-size:11.0pt;font-family=
+:&quot;Calibri&quot;,sans-serif;color:black">&gt;<br>
+<b>Gesendet:</b>&nbsp;Tuesday, September 30, 2025 11:27:09 AM<br>
+<b>An:</b>&nbsp;Aranguren Barragan Camilo Andres W.MSCIDS.2401 &lt;</span><=
+a href=3D"mailto:camilo.arangurenbarragan@stud.hslu.ch"><span lang=3D"EN-US=
+" style=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif">cam=
+ilo.arangurenbarragan@stud.hslu.ch</span></a><span lang=3D"EN-US" style=3D"=
+font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif;color:black">&g=
+t;<br>
+<b>Betreff:</b>&nbsp;AW: =93Estimation of the Incumbency Advantage=94 Proje=
+ct</span><span lang=3D"EN-US"><o:p></o:p></span></p>
+<p class=3D"xmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US">&nbsp;<o:=
+p></o:p></span></p>
+</div>
+<p class=3D"xxxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US" style=
+=3D"font-size:11.0pt">Dear Camilo,</span><span lang=3D"EN-US"><o:p></o:p></=
+span></p>
+<p class=3D"xxxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US" style=
+=3D"font-size:11.0pt">Please find the NDA attached.</span><span lang=3D"EN-=
+US"><o:p></o:p></span></p>
+<p class=3D"xxxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US" style=
+=3D"font-size:11.0pt">Best,</span><span lang=3D"EN-US"><o:p></o:p></span></=
+p>
+<p class=3D"xxxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US" style=
+=3D"font-size:11.0pt">Lukas</span><span lang=3D"EN-US"><o:p></o:p></span></=
+p>
+<p class=3D"xxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US" style=3D=
+"font-size:11.0pt">&nbsp;</span><span lang=3D"EN-US"><o:p></o:p></span></p>
+<p class=3D"xxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US" style=3D=
+"font-size:11.0pt">&nbsp;</span><span lang=3D"EN-US"><o:p></o:p></span></p>
+<div style=3D"border:none;border-top:solid windowtext 1.0pt;padding:3.0pt 0=
+cm 0cm 0cm;border-color:currentcolor">
+<p class=3D"xxmsonormal" style=3D"margin:0cm"><b><span lang=3D"EN-US" style=
+=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif">Von:</span=
+></b><span lang=3D"EN-US" style=3D"font-size:11.0pt;font-family:&quot;Calib=
+ri&quot;,sans-serif">&nbsp;Aranguren Barragan Camilo Andres W.MSCIDS.2401
+ &lt;</span><a href=3D"mailto:camilo.arangurenbarragan@stud.hslu.ch"><span =
+lang=3D"EN-US" style=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sa=
+ns-serif">camilo.arangurenbarragan@stud.hslu.ch</span></a><span lang=3D"EN-=
+US" style=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif">&=
+gt;<br>
+<b>Gesendet:</b>&nbsp;Dienstag, 30. September 2025 09:31<br>
+<b>An:</b>&nbsp;Schmid Lukas D. &lt;</span><a href=3D"mailto:lukas.schmid@u=
+nilu.ch"><span lang=3D"EN-US" style=3D"font-size:11.0pt;font-family:&quot;C=
+alibri&quot;,sans-serif">lukas.schmid@unilu.ch</span></a><span lang=3D"EN-U=
+S" style=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif">&g=
+t;<br>
+<b>Betreff:</b>&nbsp;Re: =93Estimation of the Incumbency Advantage=94 Proje=
+ct</span><span lang=3D"EN-US"><o:p></o:p></span></p>
+</div>
+<p class=3D"xxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US">&nbsp;<o=
+:p></o:p></span></p>
+<p class=3D"xxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US">Dear Luk=
+as,&nbsp;<o:p></o:p></span></p>
+<p class=3D"xxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US">&nbsp;<o=
+:p></o:p></span></p>
+<p class=3D"xxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US">Could yo=
+u please send me a link for our call?<o:p></o:p></span></p>
+<p class=3D"xxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US">&nbsp;<o=
+:p></o:p></span></p>
+<p class=3D"xxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US">Thank yo=
+u in advance&nbsp;<o:p></o:p></span></p>
+<div id=3D"x_x_ms-outlook-mobile-body-separator-line">
+<p class=3D"xxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US">&nbsp;<o=
+:p></o:p></span></p>
+</div>
+<div id=3D"x_x_ms-outlook-mobile-signature">
+<p class=3D"xxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US">Gesendet=
+ von </span>
+<a href=3D"https://aka.ms/o0ukef"><span lang=3D"EN-US">Outlook f=FCr iOS</s=
+pan></a><span lang=3D"EN-US"><o:p></o:p></span></p>
+</div>
+<div class=3D"MsoNormal" align=3D"center" style=3D"text-align:center">
+<hr size=3D"1" width=3D"98%" align=3D"center">
+</div>
+<div id=3D"x_x_divRplyFwdMsg">
+<p class=3D"xxmsonormal" style=3D"margin:0cm"><b><span lang=3D"EN-US" style=
+=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif;color:black=
+">Von:</span></b><span lang=3D"EN-US" style=3D"font-size:11.0pt;font-family=
+:&quot;Calibri&quot;,sans-serif;color:black">&nbsp;Schmid Lukas D. &lt;</sp=
+an><a href=3D"mailto:lukas.schmid@unilu.ch"><span lang=3D"EN-US" style=3D"f=
+ont-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif">lukas.schmid@un=
+ilu.ch</span></a><span lang=3D"EN-US" style=3D"font-size:11.0pt;font-family=
+:&quot;Calibri&quot;,sans-serif;color:black">&gt;<br>
+<b>Gesendet:</b>&nbsp;Tuesday, September 23, 2025 6:02:47 PM<br>
+<b>An:</b>&nbsp;Aranguren Barragan Camilo Andres W.MSCIDS.2401 &lt;</span><=
+a href=3D"mailto:camilo.arangurenbarragan@stud.hslu.ch"><span lang=3D"EN-US=
+" style=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif">cam=
+ilo.arangurenbarragan@stud.hslu.ch</span></a><span lang=3D"EN-US" style=3D"=
+font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif;color:black">&g=
+t;<br>
+<b>Betreff:</b>&nbsp;AW: =93Estimation of the Incumbency Advantage=94 Proje=
+ct</span><span lang=3D"EN-US"><o:p></o:p></span></p>
+<p class=3D"xxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US">&nbsp;<o=
+:p></o:p></span></p>
+</div>
+<p class=3D"xxxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US" style=
+=3D"font-size:11.0pt">Dear Camilo,</span><span lang=3D"EN-US"><o:p></o:p></=
+span></p>
+<p class=3D"xxxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US" style=
+=3D"font-size:11.0pt">Sounds great =96 of course. I am in Norway but how ab=
+out next Tuesday 30 September at 11am?</span><span lang=3D"EN-US"><o:p></o:=
+p></span></p>
+<p class=3D"xxxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US" style=
+=3D"font-size:11.0pt">Best,</span><span lang=3D"EN-US"><o:p></o:p></span></=
+p>
+<p class=3D"xxxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US" style=
+=3D"font-size:11.0pt">Lukas</span><span lang=3D"EN-US"><o:p></o:p></span></=
+p>
+<p class=3D"xxxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US" style=
+=3D"font-size:11.0pt">&nbsp;</span><span lang=3D"EN-US"><o:p></o:p></span><=
+/p>
+<div style=3D"border:none;border-top:solid windowtext 1.0pt;padding:3.0pt 0=
+cm 0cm 0cm;border-color:currentcolor">
+<p class=3D"xxxmsonormal" style=3D"margin:0cm"><b><span lang=3D"EN-US" styl=
+e=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif">Von:</spa=
+n></b><span lang=3D"EN-US" style=3D"font-size:11.0pt;font-family:&quot;Cali=
+bri&quot;,sans-serif">&nbsp;Aranguren Barragan Camilo Andres W.MSCIDS.2401
+ &lt;</span><a href=3D"mailto:camilo.arangurenbarragan@stud.hslu.ch"><span =
+lang=3D"EN-US" style=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sa=
+ns-serif">camilo.arangurenbarragan@stud.hslu.ch</span></a><span lang=3D"EN-=
+US" style=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif">&=
+gt;<br>
+<b>Gesendet:</b>&nbsp;Dienstag, 23. September 2025 17:55<br>
+<b>An:</b>&nbsp;Schmid Lukas D. &lt;</span><a href=3D"mailto:lukas.schmid@u=
+nilu.ch"><span lang=3D"EN-US" style=3D"font-size:11.0pt;font-family:&quot;C=
+alibri&quot;,sans-serif">lukas.schmid@unilu.ch</span></a><span lang=3D"EN-U=
+S" style=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif">&g=
+t;<br>
+<b>Betreff:</b>&nbsp;Re: =93Estimation of the Incumbency Advantage=94 Proje=
+ct</span><span lang=3D"EN-US"><o:p></o:p></span></p>
+</div>
+<p class=3D"xxxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US">&nbsp;<=
+o:p></o:p></span></p>
+<p class=3D"xxwordsection1"><span lang=3D"EN-US" style=3D"color:black">Dear=
+ Lukas,</span><span lang=3D"EN-US"><o:p></o:p></span></p>
+<p class=3D"xxwordsection1"><span lang=3D"EN-US" style=3D"color:black">The =
+university break is over, and I have just started working on the preliminar=
+y study. I=92ve reviewed the material you shared with me and noted a few qu=
+estions. Would you have about 30 minutes
+ in the coming days or weeks to help me clarify them?</span><span lang=3D"E=
+N-US"><o:p></o:p></span></p>
+<p class=3D"xxwordsection1"><span lang=3D"EN-US" style=3D"color:black">Best=
+ regards,<br>
+Camilo</span><span lang=3D"EN-US"><o:p></o:p></span></p>
+<p class=3D"xxxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US" style=
+=3D"color:black">&nbsp;</span><span lang=3D"EN-US"><o:p></o:p></span></p>
+<div id=3D"x_x_x_mail-editor-reference-message-container">
+<div style=3D"border:none;border-top:solid windowtext 1.0pt;padding:3.0pt 0=
+cm 0cm 0cm;border-color:currentcolor">
+<p class=3D"xxxmsonormal" style=3D"margin:0cm"><b><span lang=3D"EN-US" styl=
+e=3D"color:black">From:
+</span></b><span lang=3D"EN-US" style=3D"color:black">Schmid Lukas D. &lt;<=
+/span><a href=3D"mailto:lukas.schmid@unilu.ch"><span lang=3D"EN-US">lukas.s=
+chmid@unilu.ch</span></a><span lang=3D"EN-US" style=3D"color:black">&gt;<br=
+>
+<b>Date: </b>Friday, 20. June 2025 at 13:50<br>
+<b>To: </b>Aranguren Barragan Camilo Andres W.MSCIDS.2401 &lt;</span><a hre=
+f=3D"mailto:camilo.arangurenbarragan@stud.hslu.ch"><span lang=3D"EN-US">cam=
+ilo.arangurenbarragan@stud.hslu.ch</span></a><span lang=3D"EN-US" style=3D"=
+color:black">&gt;<br>
+<b>Subject: </b>AW: =93Estimation of the Incumbency Advantage=94 Project</s=
+pan><span lang=3D"EN-US"><o:p></o:p></span></p>
+</div>
+<p class=3D"xxxxxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US" style=
+=3D"font-size:11.0pt">Dear Camilo,</span><span lang=3D"EN-US"><o:p></o:p></=
+span></p>
+<p class=3D"xxxxxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US" style=
+=3D"font-size:11.0pt">&nbsp;</span><span lang=3D"EN-US"><o:p></o:p></span><=
+/p>
+<p class=3D"xxxxxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US" style=
+=3D"font-size:11.0pt">I completely forgot our paper on measuring closeness =
+in proportional systems:</span><span lang=3D"EN-US"><o:p></o:p></span></p>
+<p class=3D"xxxxxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US" style=
+=3D"font-size:11.0pt">&nbsp;</span><span lang=3D"EN-US"><o:p></o:p></span><=
+/p>
+<p class=3D"xxxxxmsonormal" style=3D"margin:0cm"><a href=3D"https://www.cam=
+bridge.org/core/journals/political-analysis/article/measuring-closeness-in-=
+proportional-representation-systems/C033EC7E886BAEEC6163A718D2D824A6"><span=
+ lang=3D"EN-US" style=3D"font-size:11.0pt">https://www.cambridge.org/core/j=
+ournals/political-analysis/article/measuring-closeness-in-proportional-repr=
+esentation-systems/C033EC7E886BAEEC6163A718D2D824A6</span></a><span lang=3D=
+"EN-US"><o:p></o:p></span></p>
+<p class=3D"xxxxxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US" style=
+=3D"font-size:11.0pt">&nbsp;</span><span lang=3D"EN-US"><o:p></o:p></span><=
+/p>
+<p class=3D"xxxxxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US" style=
+=3D"font-size:11.0pt">&nbsp;</span><span lang=3D"EN-US"><o:p></o:p></span><=
+/p>
+<p class=3D"xxxxxmsonormal" style=3D"margin:0cm"><span style=3D"font-size:1=
+1.0pt">Best,</span><o:p></o:p></p>
+<p class=3D"xxxxxmsonormal" style=3D"margin:0cm"><span style=3D"font-size:1=
+1.0pt">Lukas</span><o:p></o:p></p>
+<p class=3D"xxxmsonormal" style=3D"margin:0cm"><span style=3D"font-size:11.=
+0pt">&nbsp;</span><o:p></o:p></p>
+<p class=3D"xxxmsonormal" style=3D"margin:0cm"><span style=3D"font-size:11.=
+0pt">&nbsp;</span><o:p></o:p></p>
+<p class=3D"xxxmsonormal" style=3D"margin:0cm"><span style=3D"font-size:11.=
+0pt">&nbsp;</span><o:p></o:p></p>
+<p class=3D"xxxmsonormal" style=3D"margin:0cm"><span style=3D"font-size:11.=
+0pt">&nbsp;</span><o:p></o:p></p>
+<div style=3D"border:none;border-top:solid windowtext 1.0pt;padding:3.0pt 0=
+cm 0cm 0cm;border-color:currentcolor">
+<p class=3D"xxxmsonormal" style=3D"margin:0cm"><b><span style=3D"font-size:=
+11.0pt;font-family:&quot;Calibri&quot;,sans-serif">Von:</span></b><span sty=
+le=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif">&nbsp;Sc=
+hmid Lukas D.<br>
+<b>Gesendet:</b>&nbsp;Freitag, 20. </span><span lang=3D"EN-US" style=3D"fon=
+t-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif">Juni 2025 11:31<b=
+r>
+<b>An:</b>&nbsp;Aranguren Barragan Camilo Andres W.MSCIDS.2401 &lt;</span><=
+a href=3D"mailto:camilo.arangurenbarragan@stud.hslu.ch"><span lang=3D"EN-US=
+" style=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif">cam=
+ilo.arangurenbarragan@stud.hslu.ch</span></a><span lang=3D"EN-US" style=3D"=
+font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif">&gt;<br>
+<b>Betreff:</b>&nbsp;AW: =93Estimation of the Incumbency Advantage=94 Proje=
+ct</span><span lang=3D"EN-US"><o:p></o:p></span></p>
+</div>
+<p class=3D"xxxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US">&nbsp;<=
+o:p></o:p></span></p>
+<p class=3D"xxxxxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US" style=
+=3D"font-size:11.0pt">Dear Camilo,</span><span lang=3D"EN-US"><o:p></o:p></=
+span></p>
+<p class=3D"xxxxxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US" style=
+=3D"font-size:11.0pt">&nbsp;</span><span lang=3D"EN-US"><o:p></o:p></span><=
+/p>
+<p class=3D"xxxxxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US" style=
+=3D"font-size:11.0pt">This is a great introduction to the regression discon=
+tinuity design:
+</span><a href=3D"https://theeffectbook.net/ch-RegressionDiscontinuity.html=
+"><span lang=3D"EN-US" style=3D"font-size:11.0pt">https://theeffectbook.net=
+/ch-RegressionDiscontinuity.html</span></a><span lang=3D"EN-US" style=3D"fo=
+nt-size:11.0pt">. You will also find code
+ in different programming languages there.</span><span lang=3D"EN-US"><o:p>=
+</o:p></span></p>
+<p class=3D"xxxxxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US" style=
+=3D"font-size:11.0pt">&nbsp;</span><span lang=3D"EN-US"><o:p></o:p></span><=
+/p>
+<p class=3D"xxxxxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US" style=
+=3D"font-size:11.0pt">And this is the package that we use to combine politi=
+cians over time:
+</span><a href=3D"https://linktransformer.github.io/"><span lang=3D"EN-US" =
+style=3D"font-size:11.0pt">https://linktransformer.github.io/</span></a><sp=
+an lang=3D"EN-US" style=3D"font-size:11.0pt">.</span><span lang=3D"EN-US"><=
+o:p></o:p></span></p>
+<p class=3D"xxxxxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US" style=
+=3D"font-size:11.0pt">&nbsp;</span><span lang=3D"EN-US"><o:p></o:p></span><=
+/p>
+<p class=3D"xxxxxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US" style=
+=3D"font-size:11.0pt">Best,</span><span lang=3D"EN-US"><o:p></o:p></span></=
+p>
+<p class=3D"xxxxxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US" style=
+=3D"font-size:11.0pt">Lukas</span><span lang=3D"EN-US"><o:p></o:p></span></=
+p>
+<p class=3D"xxxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US" style=
+=3D"font-size:11.0pt">&nbsp;</span><span lang=3D"EN-US"><o:p></o:p></span><=
+/p>
+<p class=3D"xxxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US" style=
+=3D"font-size:11.0pt">&nbsp;</span><span lang=3D"EN-US"><o:p></o:p></span><=
+/p>
+<div style=3D"border:none;border-top:solid windowtext 1.0pt;padding:3.0pt 0=
+cm 0cm 0cm;border-color:currentcolor">
+<p class=3D"xxxmsonormal" style=3D"margin:0cm"><b><span lang=3D"EN-US" styl=
+e=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif">Von:</spa=
+n></b><span lang=3D"EN-US" style=3D"font-size:11.0pt;font-family:&quot;Cali=
+bri&quot;,sans-serif">&nbsp;Aranguren Barragan Camilo Andres W.MSCIDS.2401
+ &lt;</span><a href=3D"mailto:camilo.arangurenbarragan@stud.hslu.ch"><span =
+lang=3D"EN-US" style=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sa=
+ns-serif">camilo.arangurenbarragan@stud.hslu.ch</span></a><span lang=3D"EN-=
+US" style=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif">&=
+gt;<br>
+<b>Gesendet:</b>&nbsp;Freitag, 20. Juni 2025 11:12<br>
+<b>An:</b>&nbsp;Schmid Lukas D. &lt;</span><a href=3D"mailto:lukas.schmid@u=
+nilu.ch"><span lang=3D"EN-US" style=3D"font-size:11.0pt;font-family:&quot;C=
+alibri&quot;,sans-serif">lukas.schmid@unilu.ch</span></a><span lang=3D"EN-U=
+S" style=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif">&g=
+t;<br>
+<b>Betreff:</b>&nbsp;Re: =93Estimation of the Incumbency Advantage=94 Proje=
+ct</span><span lang=3D"EN-US"><o:p></o:p></span></p>
+</div>
+<p class=3D"xxxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US">&nbsp;<=
+o:p></o:p></span></p>
+<p class=3D"xxxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US">Dear Lu=
+kas,<o:p></o:p></span></p>
+<p class=3D"xxxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US">&nbsp;<=
+o:p></o:p></span></p>
+<p class=3D"xxxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US">I am so=
+ sorry. I was in a meeting at work and got the notification for our meeting=
+ but couldn't scape fast enough. I'm in the meeting if you are still availa=
+ble&nbsp;<o:p></o:p></span></p>
+<div id=3D"x_x_x_ms-outlook-mobile-body-separator-line">
+<p class=3D"xxxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US">&nbsp;<=
+o:p></o:p></span></p>
+</div>
+<div id=3D"x_x_x_ms-outlook-mobile-signature">
+<p class=3D"xxxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US">Gesende=
+t von </span>
+<a href=3D"https://aka.ms/o0ukef"><span lang=3D"EN-US">Outlook f=FCr iOS</s=
+pan></a><span lang=3D"EN-US"><o:p></o:p></span></p>
+</div>
+<div class=3D"MsoNormal" align=3D"center" style=3D"text-align:center">
+<hr size=3D"1" width=3D"98%" align=3D"center">
+</div>
+<div id=3D"x_x_x_divRplyFwdMsg">
+<p class=3D"xxxmsonormal" style=3D"margin:0cm"><b><span lang=3D"EN-US" styl=
+e=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif;color:blac=
+k">Von:</span></b><span lang=3D"EN-US" style=3D"font-size:11.0pt;font-famil=
+y:&quot;Calibri&quot;,sans-serif;color:black">&nbsp;Schmid Lukas D. &lt;</s=
+pan><a href=3D"mailto:lukas.schmid@unilu.ch"><span lang=3D"EN-US" style=3D"=
+font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif">lukas.schmid@u=
+nilu.ch</span></a><span lang=3D"EN-US" style=3D"font-size:11.0pt;font-famil=
+y:&quot;Calibri&quot;,sans-serif;color:black">&gt;<br>
+<b>Gesendet:</b>&nbsp;Friday, June 20, 2025 11:08:16 AM<br>
+<b>An:</b>&nbsp;Aranguren Barragan Camilo Andres W.MSCIDS.2401 &lt;</span><=
+a href=3D"mailto:camilo.arangurenbarragan@stud.hslu.ch"><span lang=3D"EN-US=
+" style=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif">cam=
+ilo.arangurenbarragan@stud.hslu.ch</span></a><span lang=3D"EN-US" style=3D"=
+font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif;color:black">&g=
+t;<br>
+<b>Betreff:</b>&nbsp;AW: =93Estimation of the Incumbency Advantage=94 Proje=
+ct</span><span lang=3D"EN-US"><o:p></o:p></span></p>
+<p class=3D"xxxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US">&nbsp;<=
+o:p></o:p></span></p>
+</div>
+<p class=3D"xxxxxxxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US" sty=
+le=3D"font-size:11.0pt;font-family:&quot;Arial&quot;,sans-serif">Dear Camil=
+o Aranguren,</span><span lang=3D"EN-US"><o:p></o:p></span></p>
+<p class=3D"xxxxxxxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US" sty=
+le=3D"font-size:11.0pt;font-family:&quot;Arial&quot;,sans-serif">I am in th=
+e meeting.</span><span lang=3D"EN-US"><o:p></o:p></span></p>
+<p class=3D"xxxxxxxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US" sty=
+le=3D"font-size:11.0pt;font-family:&quot;Arial&quot;,sans-serif">Best,</spa=
+n><span lang=3D"EN-US"><o:p></o:p></span></p>
+<p class=3D"xxxxxxxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US" sty=
+le=3D"font-size:11.0pt;font-family:&quot;Arial&quot;,sans-serif">Lukas</spa=
+n><span lang=3D"EN-US"><o:p></o:p></span></p>
+<p class=3D"xxxxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US" style=
+=3D"font-size:11.0pt">&nbsp;</span><span lang=3D"EN-US"><o:p></o:p></span><=
+/p>
+<p class=3D"xxxxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US" style=
+=3D"font-size:11.0pt">&nbsp;</span><span lang=3D"EN-US"><o:p></o:p></span><=
+/p>
+<div style=3D"border:none;border-top:solid windowtext 1.0pt;padding:3.0pt 0=
+cm 0cm 0cm;border-color:currentcolor">
+<p class=3D"xxxxmsonormal" style=3D"margin:0cm"><b><span lang=3D"EN-US" sty=
+le=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif">Von:</sp=
+an></b><span lang=3D"EN-US" style=3D"font-size:11.0pt;font-family:&quot;Cal=
+ibri&quot;,sans-serif">&nbsp;Aranguren Barragan Camilo Andres W.MSCIDS.2401
+ &lt;</span><a href=3D"mailto:camilo.arangurenbarragan@stud.hslu.ch"><span =
+lang=3D"EN-US" style=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sa=
+ns-serif">camilo.arangurenbarragan@stud.hslu.ch</span></a><span lang=3D"EN-=
+US" style=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif">&=
+gt;<br>
+<b>Gesendet:</b>&nbsp;Dienstag, 3. Juni 2025 09:04<br>
+<b>An:</b>&nbsp;Schmid Lukas D. &lt;</span><a href=3D"mailto:lukas.schmid@u=
+nilu.ch"><span lang=3D"EN-US" style=3D"font-size:11.0pt;font-family:&quot;C=
+alibri&quot;,sans-serif">lukas.schmid@unilu.ch</span></a><span lang=3D"EN-U=
+S" style=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif">&g=
+t;<br>
+<b>Betreff:</b>&nbsp;Re: =93Estimation of the Incumbency Advantage=94 Proje=
+ct</span><span lang=3D"EN-US"><o:p></o:p></span></p>
+</div>
+<p class=3D"xxxxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US">&nbsp;=
+<o:p></o:p></span></p>
+<p class=3D"xxxxmsonormal" style=3D"margin:0cm">Thank you!<o:p></o:p></p>
+<div id=3D"x_x_x_x_ms-outlook-mobile-body-separator-line">
+<p class=3D"xxxxmsonormal" style=3D"margin:0cm">&nbsp;<o:p></o:p></p>
+</div>
+<div id=3D"x_x_x_x_ms-outlook-mobile-signature">
+<p class=3D"xxxxmsonormal" style=3D"margin:0cm">Gesendet von <a href=3D"htt=
+ps://aka.ms/o0ukef">
+Outlook f=FCr iOS</a><o:p></o:p></p>
+</div>
+<div class=3D"MsoNormal" align=3D"center" style=3D"text-align:center">
+<hr size=3D"1" width=3D"98%" align=3D"center">
+</div>
+<div id=3D"x_x_x_x_divRplyFwdMsg">
+<p class=3D"xxxxmsonormal" style=3D"margin:0cm"><b><span lang=3D"EN-US" sty=
+le=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif;color:bla=
+ck">Von:</span></b><span lang=3D"EN-US" style=3D"font-size:11.0pt;font-fami=
+ly:&quot;Calibri&quot;,sans-serif;color:black">&nbsp;Schmid Lukas D.
+ &lt;</span><a href=3D"mailto:lukas.schmid@unilu.ch"><span lang=3D"EN-US" s=
+tyle=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif">lukas.=
+schmid@unilu.ch</span></a><span lang=3D"EN-US" style=3D"font-size:11.0pt;fo=
+nt-family:&quot;Calibri&quot;,sans-serif;color:black">&gt;<br>
+<b>Gesendet:</b>&nbsp;Tuesday, June 3, 2025 8:46:59 AM<br>
+<b>An:</b>&nbsp;Aranguren Barragan Camilo Andres W.MSCIDS.2401 &lt;</span><=
+a href=3D"mailto:camilo.arangurenbarragan@stud.hslu.ch"><span lang=3D"EN-US=
+" style=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif">cam=
+ilo.arangurenbarragan@stud.hslu.ch</span></a><span lang=3D"EN-US" style=3D"=
+font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif;color:black">&g=
+t;<br>
+<b>Betreff:</b>&nbsp;AW: =93Estimation of the Incumbency Advantage=94 Proje=
+ct</span><span lang=3D"EN-US"><o:p></o:p></span></p>
+<p class=3D"xxxxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US">&nbsp;=
+<o:p></o:p></span></p>
+</div>
+<p class=3D"xxxxxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US" style=
+=3D"font-size:11.0pt">Dear Camilo,</span><span lang=3D"EN-US"><o:p></o:p></=
+span></p>
+<p class=3D"xxxxxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US" style=
+=3D"font-size:11.0pt">&nbsp;</span><span lang=3D"EN-US"><o:p></o:p></span><=
+/p>
+<p class=3D"xxxxxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US" style=
+=3D"font-size:11.0pt">Great. Here is the Zoom link:</span><span lang=3D"EN-=
+US"><o:p></o:p></span></p>
+<p class=3D"xxxxxmsonormal" style=3D"margin:0cm"><a href=3D"https://unilu.z=
+oom.us/j/2031919964?pwd=3DNWtYcUZYMHFRVlhoZFI4dnpFM1NFZz09"><span lang=3D"E=
+N-US" style=3D"font-size:11.0pt">https://unilu.zoom.us/j/2031919964?pwd=3DN=
+WtYcUZYMHFRVlhoZFI4dnpFM1NFZz09</span></a><span lang=3D"EN-US"><o:p></o:p><=
+/span></p>
+<p class=3D"xxxxxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US" style=
+=3D"font-size:11.0pt">&nbsp;</span><span lang=3D"EN-US"><o:p></o:p></span><=
+/p>
+<p class=3D"xxxxxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US" style=
+=3D"font-size:11.0pt">Best,</span><span lang=3D"EN-US"><o:p></o:p></span></=
+p>
+<p class=3D"xxxxxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US" style=
+=3D"font-size:11.0pt">Lukas</span><span lang=3D"EN-US"><o:p></o:p></span></=
+p>
+<div style=3D"border:none;border-top:solid windowtext 1.0pt;padding:3.0pt 0=
+cm 0cm 0cm;border-color:currentcolor">
+<p class=3D"xxxxxmsonormal" style=3D"margin:0cm"><b><span lang=3D"EN-US" st=
+yle=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif">Von:</s=
+pan></b><span lang=3D"EN-US" style=3D"font-size:11.0pt;font-family:&quot;Ca=
+libri&quot;,sans-serif">&nbsp;Aranguren Barragan Camilo Andres W.MSCIDS.240=
+1
+ &lt;</span><a href=3D"mailto:camilo.arangurenbarragan@stud.hslu.ch"><span =
+lang=3D"EN-US" style=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sa=
+ns-serif">camilo.arangurenbarragan@stud.hslu.ch</span></a><span lang=3D"EN-=
+US" style=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif">&=
+gt;<br>
+<b>Gesendet:</b>&nbsp;Sonntag, 1. Juni 2025 18:17<br>
+<b>An:</b>&nbsp;Schmid Lukas D. &lt;</span><a href=3D"mailto:lukas.schmid@u=
+nilu.ch"><span lang=3D"EN-US" style=3D"font-size:11.0pt;font-family:&quot;C=
+alibri&quot;,sans-serif">lukas.schmid@unilu.ch</span></a><span lang=3D"EN-U=
+S" style=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif">&g=
+t;<br>
+<b>Betreff:</b>&nbsp;Re: =93Estimation of the Incumbency Advantage=94 Proje=
+ct</span><span lang=3D"EN-US"><o:p></o:p></span></p>
+</div>
+<p class=3D"xxxxxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US">&nbsp=
+;<o:p></o:p></span></p>
+<p class=3D"xxxxxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US">Dear =
+Lukas,<o:p></o:p></span></p>
+<p class=3D"xxxxxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US">&nbsp=
+;<o:p></o:p></span></p>
+<p class=3D"xxxxxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US">Perfe=
+ct.<o:p></o:p></span></p>
+<p class=3D"xxxxxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US">&nbsp=
+;<o:p></o:p></span></p>
+<p class=3D"xxxxxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US">Will =
+you send me the Zoom link?<o:p></o:p></span></p>
+<p class=3D"xxxxxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US">&nbsp=
+;<o:p></o:p></span></p>
+<p class=3D"xxxxxmsonormal" style=3D"margin:0cm">Best regards,<o:p></o:p></=
+p>
+<p class=3D"xxxxxmsonormal" style=3D"margin:0cm">Camilo<o:p></o:p></p>
+<div id=3D"x_x_x_x_x_ms-outlook-mobile-body-separator-line">
+<p class=3D"xxxxxmsonormal" style=3D"margin:0cm">&nbsp;<o:p></o:p></p>
+</div>
+<div id=3D"x_x_x_x_x_ms-outlook-mobile-signature">
+<p class=3D"xxxxxmsonormal" style=3D"margin:0cm">Gesendet von <a href=3D"ht=
+tps://aka.ms/o0ukef">
+Outlook f=FCr iOS</a><o:p></o:p></p>
+</div>
+<div class=3D"MsoNormal" align=3D"center" style=3D"text-align:center">
+<hr size=3D"1" width=3D"98%" align=3D"center">
+</div>
+<div id=3D"x_x_x_x_x_divRplyFwdMsg">
+<p class=3D"xxxxxmsonormal" style=3D"margin:0cm"><b><span lang=3D"EN-US" st=
+yle=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif;color:bl=
+ack">Von:</span></b><span lang=3D"EN-US" style=3D"font-size:11.0pt;font-fam=
+ily:&quot;Calibri&quot;,sans-serif;color:black">&nbsp;Schmid Lukas D.
+ &lt;</span><a href=3D"mailto:lukas.schmid@unilu.ch"><span lang=3D"EN-US" s=
+tyle=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif">lukas.=
+schmid@unilu.ch</span></a><span lang=3D"EN-US" style=3D"font-size:11.0pt;fo=
+nt-family:&quot;Calibri&quot;,sans-serif;color:black">&gt;<br>
+<b>Gesendet:</b>&nbsp;Sunday, June 1, 2025 3:16:43 PM<br>
+<b>An:</b>&nbsp;Aranguren Barragan Camilo Andres W.MSCIDS.2401 &lt;</span><=
+a href=3D"mailto:camilo.arangurenbarragan@stud.hslu.ch"><span lang=3D"EN-US=
+" style=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif">cam=
+ilo.arangurenbarragan@stud.hslu.ch</span></a><span lang=3D"EN-US" style=3D"=
+font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif;color:black">&g=
+t;<br>
+<b>Betreff:</b>&nbsp;AW: =93Estimation of the Incumbency Advantage=94 Proje=
+ct</span><span lang=3D"EN-US"><o:p></o:p></span></p>
+<p class=3D"xxxxxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US">&nbsp=
+;<o:p></o:p></span></p>
+</div>
+<p class=3D"xxxxxxxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US" sty=
+le=3D"font-size:11.0pt;font-family:&quot;Arial&quot;,sans-serif">Dear Camil=
+o Aranguren,</span><span lang=3D"EN-US"><o:p></o:p></span></p>
+<p class=3D"xxxxxxxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US" sty=
+le=3D"font-size:11.0pt;font-family:&quot;Arial&quot;,sans-serif">How about =
+June 20 at 11am?</span><span lang=3D"EN-US"><o:p></o:p></span></p>
+<p class=3D"xxxxxxxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US" sty=
+le=3D"font-size:11.0pt;font-family:&quot;Arial&quot;,sans-serif">Best,</spa=
+n><span lang=3D"EN-US"><o:p></o:p></span></p>
+<p class=3D"xxxxxxxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US" sty=
+le=3D"font-size:11.0pt;font-family:&quot;Arial&quot;,sans-serif">Lukas</spa=
+n><span lang=3D"EN-US"><o:p></o:p></span></p>
+<p class=3D"xxxxxxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US" styl=
+e=3D"font-size:11.0pt">&nbsp;</span><span lang=3D"EN-US"><o:p></o:p></span>=
+</p>
+<p class=3D"xxxxxxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US" styl=
+e=3D"font-size:11.0pt">&nbsp;</span><span lang=3D"EN-US"><o:p></o:p></span>=
+</p>
+<div style=3D"border:none;border-top:solid windowtext 1.0pt;padding:3.0pt 0=
+cm 0cm 0cm;border-color:currentcolor">
+<p class=3D"xxxxxxmsonormal" style=3D"margin:0cm"><b><span lang=3D"EN-US" s=
+tyle=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif">Von:</=
+span></b><span lang=3D"EN-US" style=3D"font-size:11.0pt;font-family:&quot;C=
+alibri&quot;,sans-serif">&nbsp;Aranguren Barragan Camilo Andres W.MSCIDS.24=
+01
+ &lt;</span><a href=3D"mailto:camilo.arangurenbarragan@stud.hslu.ch"><span =
+lang=3D"EN-US" style=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sa=
+ns-serif">camilo.arangurenbarragan@stud.hslu.ch</span></a><span lang=3D"EN-=
+US" style=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif">&=
+gt;<br>
+<b>Gesendet:</b>&nbsp;Sonntag, 1. Juni 2025 15:16<br>
+<b>An:</b>&nbsp;Schmid Lukas D. &lt;</span><a href=3D"mailto:lukas.schmid@u=
+nilu.ch"><span lang=3D"EN-US" style=3D"font-size:11.0pt;font-family:&quot;C=
+alibri&quot;,sans-serif">lukas.schmid@unilu.ch</span></a><span lang=3D"EN-U=
+S" style=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif">&g=
+t;<br>
+<b>Betreff:</b>&nbsp;Re: =93Estimation of the Incumbency Advantage=94 Proje=
+ct</span><span lang=3D"EN-US"><o:p></o:p></span></p>
+</div>
+<p class=3D"xxxxxxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US">&nbs=
+p;<o:p></o:p></span></p>
+<p class=3D"xxxxxxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US">Yes,=
+ that would be great.<o:p></o:p></span></p>
+<p class=3D"xxxxxxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US">&nbs=
+p;<o:p></o:p></span></p>
+<p class=3D"xxxxxxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US">I wi=
+ll have an exam on the 18th but apart from that I am &nbsp;flexible that We=
+ek.<o:p></o:p></span></p>
+<p class=3D"xxxxxxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US">&nbs=
+p;<o:p></o:p></span></p>
+<p class=3D"xxxxxxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US">&nbs=
+p;<o:p></o:p></span></p>
+<p class=3D"xxxxxxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US">&nbs=
+p;<o:p></o:p></span></p>
+<p class=3D"xxxxxxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US">&nbs=
+p;<o:p></o:p></span></p>
+<div id=3D"x_x_x_x_x_x_ms-outlook-mobile-body-separator-line">
+<p class=3D"xxxxxxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US">&nbs=
+p;<o:p></o:p></span></p>
+</div>
+<div id=3D"x_x_x_x_x_x_ms-outlook-mobile-signature">
+<p class=3D"xxxxxxmsonormal" style=3D"margin:0cm">Gesendet von <a href=3D"h=
+ttps://aka.ms/o0ukef">
+Outlook f=FCr iOS</a><o:p></o:p></p>
+</div>
+<div class=3D"MsoNormal" align=3D"center" style=3D"text-align:center">
+<hr size=3D"1" width=3D"98%" align=3D"center">
+</div>
+<div id=3D"x_x_x_x_x_x_divRplyFwdMsg">
+<p class=3D"xxxxxxmsonormal" style=3D"margin:0cm"><b><span lang=3D"EN-US" s=
+tyle=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif;color:b=
+lack">Von:</span></b><span lang=3D"EN-US" style=3D"font-size:11.0pt;font-fa=
+mily:&quot;Calibri&quot;,sans-serif;color:black">&nbsp;Schmid Lukas D.
+ &lt;</span><a href=3D"mailto:lukas.schmid@unilu.ch"><span lang=3D"EN-US" s=
+tyle=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif">lukas.=
+schmid@unilu.ch</span></a><span lang=3D"EN-US" style=3D"font-size:11.0pt;fo=
+nt-family:&quot;Calibri&quot;,sans-serif;color:black">&gt;<br>
+<b>Gesendet:</b>&nbsp;Sunday, June 1, 2025 3:09:35 PM<br>
+<b>An:</b>&nbsp;Aranguren Barragan Camilo Andres W.MSCIDS.2401 &lt;</span><=
+a href=3D"mailto:camilo.arangurenbarragan@stud.hslu.ch"><span lang=3D"EN-US=
+" style=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif">cam=
+ilo.arangurenbarragan@stud.hslu.ch</span></a><span lang=3D"EN-US" style=3D"=
+font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif;color:black">&g=
+t;<br>
+<b>Betreff:</b>&nbsp;AW: =93Estimation of the Incumbency Advantage=94 Proje=
+ct</span><span lang=3D"EN-US"><o:p></o:p></span></p>
+<p class=3D"xxxxxxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US">&nbs=
+p;<o:p></o:p></span></p>
+</div>
+<p class=3D"xxxxxxxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US" sty=
+le=3D"font-size:11.0pt;font-family:&quot;Arial&quot;,sans-serif">Dear Camil=
+o Aranguren,</span><span lang=3D"EN-US"><o:p></o:p></span></p>
+<p class=3D"xxxxxxxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US" sty=
+le=3D"font-size:11.0pt;font-family:&quot;Arial&quot;,sans-serif">This sound=
+s great =96 many thanks for contacting me. Can we meet on Zoom in the week =
+of June 16?</span><span lang=3D"EN-US"><o:p></o:p></span></p>
+<p class=3D"xxxxxxxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US" sty=
+le=3D"font-size:11.0pt;font-family:&quot;Arial&quot;,sans-serif">Best,</spa=
+n><span lang=3D"EN-US"><o:p></o:p></span></p>
+<p class=3D"xxxxxxxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US" sty=
+le=3D"font-size:11.0pt;font-family:&quot;Arial&quot;,sans-serif">Lukas</spa=
+n><span lang=3D"EN-US"><o:p></o:p></span></p>
+<p class=3D"xxxxxxxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US" sty=
+le=3D"font-size:11.0pt">&nbsp;</span><span lang=3D"EN-US"><o:p></o:p></span=
+></p>
+<p class=3D"xxxxxxxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US" sty=
+le=3D"font-size:11.0pt">&nbsp;</span><span lang=3D"EN-US"><o:p></o:p></span=
+></p>
+<div style=3D"border:none;border-top:solid windowtext 1.0pt;padding:3.0pt 0=
+cm 0cm 0cm;border-color:currentcolor">
+<p class=3D"xxxxxxxmsonormal" style=3D"margin:0cm"><b><span lang=3D"EN-US" =
+style=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif">Von:<=
+/span></b><span lang=3D"EN-US" style=3D"font-size:11.0pt;font-family:&quot;=
+Calibri&quot;,sans-serif">&nbsp;Aranguren Barragan Camilo Andres W.MSCIDS.2=
+401
+ &lt;</span><a href=3D"mailto:camilo.arangurenbarragan@stud.hslu.ch"><span =
+lang=3D"EN-US" style=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sa=
+ns-serif">camilo.arangurenbarragan@stud.hslu.ch</span></a><span lang=3D"EN-=
+US" style=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif">&=
+gt;<br>
+<b>Gesendet:</b>&nbsp;Samstag, 31. Mai 2025 11:21<br>
+<b>An:</b>&nbsp;Schmid Lukas D. &lt;</span><a href=3D"mailto:lukas.schmid@u=
+nilu.ch"><span lang=3D"EN-US" style=3D"font-size:11.0pt;font-family:&quot;C=
+alibri&quot;,sans-serif">lukas.schmid@unilu.ch</span></a><span lang=3D"EN-U=
+S" style=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif">&g=
+t;<br>
+<b>Betreff:</b>&nbsp;=93Estimation of the Incumbency Advantage=94 Project</=
+span><span lang=3D"EN-US"><o:p></o:p></span></p>
+</div>
+<p class=3D"xxxxxxxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US" sty=
+le=3D"font-size:11.0pt">&nbsp;</span><span lang=3D"EN-US"><o:p></o:p></span=
+></p>
+<p class=3D"xxxxxxxmsonormal" style=3D"margin-bottom:12.0pt"><span lang=3D"=
+EN-US" style=3D"font-size:11.0pt;font-family:&quot;Arial&quot;,sans-serif">=
+Dear Professor Schmid,</span><span lang=3D"EN-US"><o:p></o:p></span></p>
+<p class=3D"xxxxxxxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US" sty=
+le=3D"font-size:11.0pt;font-family:&quot;Arial&quot;,sans-serif">I hope thi=
+s message finds you well. I recently came across your proposed project
+<i>=93Estimation of the Incumbency Advantage=94</i>&nbsp;and was immediatel=
+y intrigued, even though I understand it was originally intended for a prev=
+ious semester.</span><span lang=3D"EN-US"><o:p></o:p></span></p>
+<p class=3D"xxxxxxxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US" sty=
+le=3D"font-size:11.0pt;font-family:&quot;Arial&quot;,sans-serif">&nbsp;</sp=
+an><span lang=3D"EN-US"><o:p></o:p></span></p>
+<p class=3D"xxxxxxxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US" sty=
+le=3D"font-size:11.0pt;font-family:&quot;Arial&quot;,sans-serif">Having bee=
+n born and raised in Colombia, I have always had a strong interest in both =
+local and international politics. I now live in Germany,
+ where I am a citizen and actively engaged in political activities. The top=
+ic of incumbency advantage resonates strongly with my personal and academic=
+ interests.</span><span lang=3D"EN-US"><o:p></o:p></span></p>
+<p class=3D"xxxxxxxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US" sty=
+le=3D"font-size:11.0pt;font-family:&quot;Arial&quot;,sans-serif">&nbsp;</sp=
+an><span lang=3D"EN-US"><o:p></o:p></span></p>
+<p class=3D"xxxxxxxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US" sty=
+le=3D"font-size:11.0pt;font-family:&quot;Arial&quot;,sans-serif">I would be=
+ thrilled at the opportunity to contribute to this project, should there st=
+ill be a possibility to get involved. I have a working
+ knowledge of R and a solid foundation in statistics, and I am eager to dee=
+pen my skills further through this research.</span><span lang=3D"EN-US"><o:=
+p></o:p></span></p>
+<p class=3D"xxxxxxxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US" sty=
+le=3D"font-size:11.0pt;font-family:&quot;Arial&quot;,sans-serif">&nbsp;</sp=
+an><span lang=3D"EN-US"><o:p></o:p></span></p>
+<p class=3D"xxxxxxxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US" sty=
+le=3D"font-size:11.0pt;font-family:&quot;Arial&quot;,sans-serif">Thank you =
+very much for considering my application. I would be happy to provide any a=
+dditional information or discuss the opportunity at
+ your convenience.</span><span lang=3D"EN-US"><o:p></o:p></span></p>
+<p class=3D"xxxxxxxmsonormal" style=3D"margin:0cm"><span lang=3D"EN-US" sty=
+le=3D"font-size:11.0pt;font-family:&quot;Arial&quot;,sans-serif">&nbsp;</sp=
+an><span lang=3D"EN-US"><o:p></o:p></span></p>
+<p class=3D"xxxxxxxmsonormal" style=3D"margin:0cm"><span style=3D"font-size=
+:11.0pt;font-family:&quot;Arial&quot;,sans-serif">Warm regards,<br>
+Camilo Aranguren</span><o:p></o:p></p>
+<p class=3D"xxxxxxxmsonormal" style=3D"margin:0cm"><span style=3D"font-size=
+:11.0pt">&nbsp;</span><o:p></o:p></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>
+
+--_000_GV0P278MB17665B57FDDBBB907AB355C2E2F2AGV0P278MB1766CHEP_--

@@ -1,0 +1,17 @@
+{
+  "source_rows_csv": 39909,
+  "source_rows_dta": 39909,
+  "merged_rows": 39909,
+  "left_only_rows": 0,
+  "right_only_rows": 0,
+  "key_duplicates_csv": 0,
+  "key_duplicates_dta": 0,
+  "missing_votemargin": 1,
+  "election_ym_min": 200403,
+  "election_ym_max": 202307,
+  "provinces": 52,
+  "unique_parties": 748,
+  "elected_share": 0.07015961408615112,
+  "eligible_voters_non_missing": 39909,
+  "running_variable_non_missing": 39908
+}
