@@ -1,2 +1,2 @@
 person_id_map_path,person_id_col,merge_mode,n_rows_input,n_rows_map,n_rows_merged,n_unmatched,n_unique_person_id
-data/processed/person_id_map.csv,person_id,row_keys,39909,39909,39909,0,30324
+data/processed/person_id_map.csv,person_id,row_keys,39779,39909,39779,0,30231

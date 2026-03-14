@@ -2828,6 +2828,16 @@ def main() -> None:
     plot_bandwidth = args.bandwidth
 
     df = pd.read_csv(data_path)
+
+    # Exclude Ceuta (51) and Melilla (52): single-member plurality districts
+    # where the D'Hondt closeness measure is not applicable.
+    _ceuta_melilla = {51, 52}
+    n_before = len(df)
+    df = df[~df["prv_code"].isin(_ceuta_melilla)].reset_index(drop=True)
+    n_dropped = n_before - len(df)
+    if n_dropped:
+        print(f"Excluded {n_dropped} rows from Ceuta/Melilla (single-member plurality districts).")
+
     required = ["candidate", "prv_code", "election_ym", "elected_dta", args.running_col]
     _assert_columns(df, required)
     main_se_types, skipped_se_types = _resolve_available_se_types(df, requested_se_types)
