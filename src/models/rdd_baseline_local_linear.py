@@ -52,6 +52,8 @@ DEFAULT_DENSITY_BINS_OUTPUT = "data/processed/rdd_running_variable_density_bins.
 DEFAULT_DENSITY_SUMMARY_OUTPUT = "data/processed/rdd_running_variable_density_summary.csv"
 DEFAULT_BW_SELECTION_OUTPUT = "data/processed/rdd_bandwidth_selection.csv"
 DEFAULT_MAIN_SELECTED_BW_OUTPUT = "data/processed/rdd_baseline_estimates_selected_bw.csv"
+DEFAULT_LIST_POS_OUTPUT = "data/processed/rdd_list_position_estimates.csv"
+DEFAULT_HETEROGENEITY_OUTPUT = "data/processed/rdd_heterogeneity_district_magnitude.csv"
 DEFAULT_FIG_DIR = "data/processed/figures"
 DEFAULT_WINDOWS_DIR = "data/processed/windows"
 DEFAULT_BANDWIDTH_GRID = "0.025,0.05,0.075,0.10"
@@ -386,6 +388,19 @@ def parse_args() -> argparse.Namespace:
         help=(
             "Output CSV for main estimates run at selected data-driven bandwidths "
             f"(default: {DEFAULT_MAIN_SELECTED_BW_OUTPUT})"
+        ),
+    )
+    parser.add_argument(
+        "--list-pos-output-csv",
+        default=DEFAULT_LIST_POS_OUTPUT,
+        help=f"Output CSV for list-position RDD estimates (default: {DEFAULT_LIST_POS_OUTPUT})",
+    )
+    parser.add_argument(
+        "--heterogeneity-output-csv",
+        default=DEFAULT_HETEROGENEITY_OUTPUT,
+        help=(
+            "Output CSV for heterogeneity-by-district-magnitude estimates "
+            f"(default: {DEFAULT_HETEROGENEITY_OUTPUT})"
         ),
     )
     parser.add_argument(
@@ -978,17 +993,35 @@ def _build_next_outcomes_by_id(
     same_win_col = f"wins_next_{prefix}_same_prv"
     any_run_col = f"runs_next_{prefix}_any_prv"
     any_win_col = f"wins_next_{prefix}_any_prv"
+    list_pos_next_col = f"list_pos_next_{prefix}_same_prv"
 
     panel_same = (
         out.groupby([id_col, "prv_code", "election_ym"], as_index=False)
         .agg(elected=("elected_dta", "max"))
         .assign(runs=1)
     )
+
+    # Also capture list position in the next election (for list-position outcome).
+    # Take the minimum list_pos when a candidate appears multiple times in the
+    # same party-province-election (should not happen, but defensive).
+    if "list_pos" in out.columns:
+        list_pos_lookup = (
+            out.dropna(subset=[id_col, "prv_code", "election_ym"])
+            .groupby([id_col, "prv_code", "election_ym"], as_index=False)
+            .agg(list_pos_next=("list_pos", "min"))
+        )
+        panel_same = panel_same.merge(
+            list_pos_lookup, on=[id_col, "prv_code", "election_ym"], how="left"
+        )
+    else:
+        panel_same["list_pos_next"] = np.nan
+
     next_same = panel_same.rename(
         columns={
             "election_ym": "next_election_ym",
             "runs": same_run_col,
             "elected": same_win_col,
+            "list_pos_next": list_pos_next_col,
         }
     )
     out = out.merge(next_same, on=[id_col, "prv_code", "next_election_ym"], how="left")
@@ -1036,6 +1069,14 @@ def build_next_election_outcomes(df: pd.DataFrame) -> pd.DataFrame:
 
     out["runs_next"] = out["runs_next_same_prv"]
     out["wins_next"] = out["wins_next_same_prv"]
+
+    # List position in the next election (person_id-based, same province).
+    out["list_pos_next"] = pd.to_numeric(
+        out.get("list_pos_next_person_same_prv", pd.Series(dtype="float64")),
+        errors="coerce",
+    )
+    out["list_pos"] = pd.to_numeric(out["list_pos"], errors="coerce")
+    out["list_pos_change"] = out["list_pos_next"] - out["list_pos"]
     return out
 
 
@@ -2799,6 +2840,8 @@ def main() -> None:
     density_summary_output_path = Path(args.density_summary_output_csv)
     bw_selection_output_path = Path(args.bw_selection_output_csv)
     main_selected_bw_output_path = Path(args.main_selected_bw_output_csv)
+    list_pos_output_path = Path(args.list_pos_output_csv)
+    heterogeneity_output_path = Path(args.heterogeneity_output_csv)
     fig_dir = Path(args.fig_dir)
 
     output_path.parent.mkdir(parents=True, exist_ok=True)
@@ -2999,6 +3042,77 @@ def main() -> None:
         sharp_fuzzy_comparison_df["sharp_tau"] - sharp_fuzzy_comparison_df["fuzzy_tau"]
     )
     sharp_fuzzy_comparison_df.to_csv(sharp_fuzzy_comparison_output_path, index=False)
+
+    # ── List-position outcome (Sub-question 4) ──────────────────────────
+    # Estimate RDD on list_pos_next and list_pos_change, conditional on
+    # the candidate running again (i.e. list_pos_next is non-missing).
+    list_pos_outcomes = ["list_pos_next", "list_pos_change"]
+    list_pos_estimates: list[dict[str, float | int | str]] = []
+    for lp_outcome in list_pos_outcomes:
+        if lp_outcome not in prepared.columns or prepared[lp_outcome].notna().sum() == 0:
+            print(f"  Skipping list-position outcome '{lp_outcome}' (not available).")
+            continue
+        lp_sample = _prepare_sample(
+            prepared, running_col=args.running_col, outcome_col=lp_outcome,
+            require_next_election=True,
+        )
+        for bw in bandwidth_grid:
+            for se_type in main_se_types:
+                est = estimate_local_linear_rd(
+                    lp_sample,
+                    outcome_col=lp_outcome,
+                    running_col=args.running_col,
+                    bandwidth=bw,
+                    min_side_n=args.min_side_n,
+                    analysis_type="list_position",
+                    se_type=se_type,
+                )
+                list_pos_estimates.append(est.as_dict())
+    if list_pos_estimates:
+        list_pos_df = pd.DataFrame(list_pos_estimates).sort_values(
+            ["outcome", "se_type", "bandwidth"]
+        )
+        list_pos_df.to_csv(list_pos_output_path, index=False)
+        print(f"List-position estimates saved ({len(list_pos_df)} rows).")
+
+    # ── Heterogeneity by district magnitude (Sub-question 3) ────────────
+    heterogeneity_rows: list[dict[str, float | int | str]] = []
+    if "seats" in prepared.columns:
+        seats_numeric = pd.to_numeric(prepared["seats"], errors="coerce")
+        median_seats = float(seats_numeric.median())
+        print(f"District-magnitude heterogeneity: median seats = {median_seats:.0f}")
+
+        subgroups = {
+            "high_magnitude": prepared[seats_numeric >= median_seats].copy(),
+            "low_magnitude": prepared[seats_numeric < median_seats].copy(),
+        }
+        for subgroup_label, subgroup_df in subgroups.items():
+            for outcome_col in main_outcomes:
+                sg_sample = _prepare_sample(
+                    subgroup_df, running_col=args.running_col,
+                    outcome_col=outcome_col, require_next_election=True,
+                )
+                for bw in bandwidth_grid:
+                    for se_type in main_se_types:
+                        est = estimate_local_linear_rd(
+                            sg_sample,
+                            outcome_col=outcome_col,
+                            running_col=args.running_col,
+                            bandwidth=bw,
+                            min_side_n=args.min_side_n,
+                            analysis_type=f"heterogeneity_{subgroup_label}",
+                            se_type=se_type,
+                        )
+                        row = est.as_dict()
+                        row["subgroup"] = subgroup_label
+                        row["median_seats"] = median_seats
+                        heterogeneity_rows.append(row)
+    if heterogeneity_rows:
+        het_df = pd.DataFrame(heterogeneity_rows).sort_values(
+            ["subgroup", "outcome", "se_type", "bandwidth"]
+        )
+        het_df.to_csv(heterogeneity_output_path, index=False)
+        print(f"Heterogeneity estimates saved ({len(het_df)} rows).")
 
     bw_selection_rows: list[dict[str, float | int | str]] = []
     selected_bw_estimates: list[dict[str, float | int | str]] = []

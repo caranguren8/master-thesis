@@ -21,6 +21,8 @@ DEFAULT_DESCRIPTIVE_STATS = "data/processed/rdd_descriptive_statistics.csv"
 DEFAULT_BALANCE = "data/processed/rdd_balance_placebo_checks.csv"
 DEFAULT_BALANCE_PRETREATMENT = "data/processed/rdd_balance_placebo_pretreatment.csv"
 DEFAULT_DENSITY = "data/processed/rdd_running_variable_density_summary.csv"
+DEFAULT_LIST_POS = "data/processed/rdd_list_position_estimates.csv"
+DEFAULT_HETEROGENEITY = "data/processed/rdd_heterogeneity_district_magnitude.csv"
 DEFAULT_OUTDIR = "data/processed/thesis_tables"
 DEFAULT_PREFERRED_SE = "cluster_prv_election"
 DEFAULT_BW_GRID = "0.025,0.05,0.075,0.10"
@@ -544,6 +546,84 @@ def _build_balance_table(
     return pd.DataFrame(rows)
 
 
+def _build_list_position_table(
+    list_pos_df: pd.DataFrame,
+    preferred_se: str,
+    bw_grid: list[float],
+) -> pd.DataFrame:
+    """Build a table of list-position RDD estimates across bandwidths."""
+    rows: list[dict[str, float | int | str]] = []
+    outcomes = sorted(list_pos_df["outcome"].unique().tolist())
+    for outcome in outcomes:
+        sub = list_pos_df[
+            (list_pos_df["outcome"] == outcome)
+            & (list_pos_df["se_type"] == preferred_se)
+        ]
+        for bw in bw_grid:
+            match = sub[np.isclose(sub["bandwidth"], bw, atol=1e-12)]
+            if match.empty:
+                continue
+            r = match.iloc[0]
+            rows.append(
+                {
+                    "outcome": outcome,
+                    "bandwidth": bw,
+                    "n_window": int(r.get("n_window", 0)),
+                    "n_left": int(r.get("n_left", 0)),
+                    "n_right": int(r.get("n_right", 0)),
+                    "mean_left": float(r.get("mean_left", np.nan)),
+                    "mean_right": float(r.get("mean_right", np.nan)),
+                    "tau": float(r["tau"]),
+                    "se": float(r["se"]),
+                    "p_value": float(r["p_value"]),
+                    "ci95_low": float(r.get("ci95_low", np.nan)),
+                    "ci95_high": float(r.get("ci95_high", np.nan)),
+                    "stars": _stars(float(r["p_value"])),
+                }
+            )
+    return pd.DataFrame(rows)
+
+
+def _build_heterogeneity_table(
+    het_df: pd.DataFrame,
+    preferred_se: str,
+    target_bw: float,
+) -> pd.DataFrame:
+    """Build a table comparing RDD estimates across district-magnitude subgroups."""
+    rows: list[dict[str, float | int | str]] = []
+    sub = het_df[
+        (het_df["se_type"] == preferred_se)
+        & np.isclose(het_df["bandwidth"], target_bw, atol=1e-12)
+    ]
+    for _, r in sub.iterrows():
+        rows.append(
+            {
+                "outcome": r["outcome"],
+                "subgroup": r["subgroup"],
+                "n_window": int(r.get("n_window", 0)),
+                "n_left": int(r.get("n_left", 0)),
+                "n_right": int(r.get("n_right", 0)),
+                "mean_left": float(r.get("mean_left", np.nan)),
+                "mean_right": float(r.get("mean_right", np.nan)),
+                "tau": float(r["tau"]),
+                "se": float(r["se"]),
+                "p_value": float(r["p_value"]),
+                "ci95_low": float(r.get("ci95_low", np.nan)),
+                "ci95_high": float(r.get("ci95_high", np.nan)),
+                "stars": _stars(float(r["p_value"])),
+                "median_seats": float(r.get("median_seats", np.nan)),
+            }
+        )
+    order = {"runs_next": 0, "wins_next": 1}
+    df = pd.DataFrame(rows)
+    if not df.empty:
+        df = df.sort_values(
+            ["outcome", "subgroup"],
+            key=lambda s: s.map(order) if s.name == "outcome" else s,
+        )
+    return df
+
+
 def _write_table(df: pd.DataFrame, outdir: Path, stem: str) -> None:
     outdir.mkdir(parents=True, exist_ok=True)
     csv_path = outdir / f"{stem}.csv"
@@ -655,6 +735,26 @@ def main() -> None:
         _write_table(density_df, outdir=outdir, stem="thesis_density_test")
         table_count += 1
         print(f"Density test table rows: {len(density_df)}")
+
+    list_pos_path = Path(DEFAULT_LIST_POS)
+    if list_pos_path.exists():
+        list_pos_df = _read_csv(list_pos_path)
+        list_pos_table = _build_list_position_table(
+            list_pos_df, preferred_se=args.preferred_se, bw_grid=bw_grid
+        )
+        _write_table(list_pos_table, outdir=outdir, stem="thesis_list_position_effects")
+        table_count += 1
+        print(f"List-position table rows: {len(list_pos_table)}")
+
+    het_path = Path(DEFAULT_HETEROGENEITY)
+    if het_path.exists():
+        het_df = _read_csv(het_path)
+        het_table = _build_heterogeneity_table(
+            het_df, preferred_se=args.preferred_se, target_bw=float(args.se_table_bandwidth)
+        )
+        _write_table(het_table, outdir=outdir, stem="thesis_heterogeneity_district_magnitude")
+        table_count += 1
+        print(f"Heterogeneity table rows: {len(het_table)}")
 
     print(f"\nThesis tables created: {table_count} tables.")
     print(f"Output directory: {outdir}")
