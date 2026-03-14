@@ -621,7 +621,37 @@ const ch6 = [
   para("Table 10 presents the RDD estimates for two list-position outcomes: list_pos_next (the candidate\u2019s raw list position in the subsequent election) and list_pos_change (the change in list position from the current to the subsequent election, where negative values indicate an improvement). The estimates are reported across the bandwidth grid with province-election clustered standard errors."),
   emptyPara(),
   para([new TextRun({ text: "Table 10: List Position Effects \u2013 RDD Estimates (Conditional on Running Again)", bold: true, font: "Arial", size: 22 })], { alignment: AlignmentType.CENTER }),
-  para([new TextRun({ text: "[Table 10 is generated from data/processed/thesis_tables/thesis_list_position_effects.csv]", italics: true, font: "Arial", size: 20 })]),
+
+  (() => {
+    const colW = [1700, 900, 900, 1100, 1100, 1100, 900];
+    return new Table({
+      width: { size: 8500, type: WidthType.DXA },
+      columnWidths: colW,
+      rows: [
+        new TableRow({ children: [
+          headerCell("Outcome", colW[0]),
+          headerCell("BW", colW[1]),
+          headerCell("N", colW[2]),
+          headerCell("Mean (L)", colW[3]),
+          headerCell("Mean (R)", colW[4]),
+          headerCell("\u03C4 (SE)", colW[5]),
+          headerCell("p-value", colW[6]),
+        ]}),
+        ...[
+          ["List pos. next", "0.025", "402", "4.180", "3.232", "\u22120.013 (0.635)", "0.984"],
+          ["List pos. next", "0.050", "864", "3.859", "3.264", "\u22120.770 (0.469)", "0.102"],
+          ["List pos. next", "0.075", "1,403", "3.594", "3.096", "\u22120.946* (0.463)", "0.042"],
+          ["List pos. next", "0.100", "1,904", "3.490", "2.967", "\u22120.895* (0.454)", "0.050"],
+          ["List pos. change", "0.025", "402", "1.472", "0.504", "0.859 (0.525)", "0.103"],
+          ["List pos. change", "0.050", "864", "1.204", "0.370", "\u22120.148 (0.456)", "0.745"],
+          ["List pos. change", "0.075", "1,403", "1.127", "0.289", "\u22120.498 (0.408)", "0.224"],
+          ["List pos. change", "0.100", "1,904", "1.026", "0.295", "\u22120.761 (0.407)", "0.062"],
+        ].map(row => new TableRow({ children: row.map((v, i) => dataCell(v, colW[i], i === 0 ? "left" : "right")) }))
+      ]
+    });
+  })(),
+  emptyPara(),
+  para([new TextRun({ text: "Notes: ", italics: true, font: "Arial", size: 20 }), new TextRun({ text: "Province-election clustered SEs. Conditional on the candidate reappearing on a party list. Negative \u03C4 for list_pos_next indicates a better (higher) list position. * p < 0.05.", font: "Arial", size: 20 })]),
   emptyPara(),
   para("The list-position analysis reveals that candidates whose party barely wins a marginal seat tend to receive more favorable list positions in the subsequent election. At the baseline bandwidth of 0.05, the point estimate for list_pos_next is \u22120.77 positions (SE = 0.47, p = 0.10), indicating that candidates on the winning side of the cutoff are placed approximately 0.8 positions higher on the list, though the effect narrowly misses statistical significance at conventional levels. At the wider bandwidth of 0.075, the estimate strengthens to \u22120.95 positions (SE = 0.46, p = 0.04), reaching significance at the 5% level. The list_pos_change estimates show a similar directional pattern but are less precisely estimated, with the largest bandwidth (0.10) approaching significance at the 10% level (\u03C4 = \u22120.76, p = 0.06). These results, observed among the 864 candidates (at BW = 0.05) who reappear on a party list, are consistent with parties rewarding incumbency experience in their list-ordering decisions, though the evidence is suggestive at the narrower bandwidths and becomes more robust as the window expands."),
 
@@ -629,8 +659,34 @@ const ch6 = [
   para("Sub-question 3 asks whether the incumbency advantage varies across districts of different sizes. District magnitude\u2014the number of seats allocated to a province\u2014is a key institutional parameter that shapes the competitiveness and proportionality of elections. In small-magnitude districts (2\u20134 seats), the effective threshold for winning a seat is high, competition is intense, and a single seat can represent a large share of the province\u2019s representation. In large-magnitude districts (10+ seats), the threshold is lower, and the marginal seat represents a smaller fraction of total representation."),
   para("To investigate this heterogeneity, I split the analysis sample at the median district magnitude and re-estimate the main RDD specification separately for high-magnitude and low-magnitude provinces. Table 11 presents the results."),
   emptyPara(),
-  para([new TextRun({ text: "Table 11: Heterogeneity by District Magnitude \u2013 RDD Estimates", bold: true, font: "Arial", size: 22 })], { alignment: AlignmentType.CENTER }),
-  para([new TextRun({ text: "[Table 11 is generated from data/processed/thesis_tables/thesis_heterogeneity_district_magnitude.csv]", italics: true, font: "Arial", size: 20 })]),
+  para([new TextRun({ text: "Table 11: Heterogeneity by District Magnitude \u2013 RDD Estimates (BW = 0.05)", bold: true, font: "Arial", size: 22 })], { alignment: AlignmentType.CENTER }),
+
+  (() => {
+    const colW = [1200, 1600, 900, 1100, 1100, 1200, 900];
+    return new Table({
+      width: { size: 8500, type: WidthType.DXA },
+      columnWidths: colW,
+      rows: [
+        new TableRow({ children: [
+          headerCell("Outcome", colW[0]),
+          headerCell("Subgroup", colW[1]),
+          headerCell("N", colW[2]),
+          headerCell("Mean (L)", colW[3]),
+          headerCell("Mean (R)", colW[4]),
+          headerCell("\u03C4 (SE)", colW[5]),
+          headerCell("p-value", colW[6]),
+        ]}),
+        ...[
+          ["Runs next", "High magnitude (\u2265 8)", "1,344", "0.305", "0.596", "0.264*** (0.069)", "<0.001"],
+          ["Runs next", "Low magnitude (< 8)", "774", "0.322", "0.597", "0.307*** (0.070)", "<0.001"],
+          ["Wins next", "High magnitude (\u2265 8)", "1,344", "0.046", "0.409", "0.137* (0.066)", "0.040"],
+          ["Wins next", "Low magnitude (< 8)", "774", "0.079", "0.394", "0.244*** (0.067)", "<0.001"],
+        ].map(row => new TableRow({ children: row.map((v, i) => dataCell(v, colW[i], i === 0 ? "left" : "right")) }))
+      ]
+    });
+  })(),
+  emptyPara(),
+  para([new TextRun({ text: "Notes: ", italics: true, font: "Arial", size: 20 }), new TextRun({ text: "Province-election clustered SEs. Median district magnitude = 8 seats. * p < 0.05, *** p < 0.001.", font: "Arial", size: 20 })]),
   emptyPara(),
   para("The heterogeneity analysis reveals that the incumbency advantage is present and statistically significant in both high-magnitude and low-magnitude districts (split at the median of 8 seats). For the extensive margin (runs next), the point estimate is 0.264 (p < 0.001) in high-magnitude districts and 0.307 (p < 0.001) in low-magnitude districts. The pattern is more pronounced for the intensive margin (wins next): the effect is 0.244 (p < 0.001) in low-magnitude districts but only 0.137 (p = 0.04) in high-magnitude districts. This difference is consistent with the idea that winning a marginal seat matters more in smaller provinces where competition for fewer seats is fiercer and each seat represents a larger share of the province\u2019s representation. Despite these differences in magnitude, the broad pattern is clear: the incumbency advantage is a general phenomenon across Spain\u2019s diverse district magnitudes rather than being driven by a particular type of constituency."),
   new Paragraph({ children: [new PageBreak()] })
