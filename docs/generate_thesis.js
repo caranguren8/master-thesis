@@ -260,13 +260,13 @@ const listOfTables = [
   para("Table 2: Main RDD Estimates \u2013 Sharp and Fuzzy Specifications"),
   para("Table 3: Bandwidth Sensitivity Analysis"),
   para("Table 4: Standard Error Robustness"),
-  para("Table 5: McCrary Density Tests"),
-  para("Table 6: Placebo Cutoff Tests"),
-  para("Table 7: Donut-Hole Robustness"),
-  para("Table 8: Polynomial Order Comparison"),
-  para("Table 9: Covariate Balance at the Cutoff"),
-  para("Table 10: List Position Effects \u2013 RDD Estimates"),
-  para("Table 11: Heterogeneity by District Magnitude"),
+  para("Table 5: List Position Effects \u2013 RDD Estimates"),
+  para("Table 6: Heterogeneity by District Magnitude"),
+  para("Table 7: McCrary Density Tests"),
+  para("Table 8: Placebo Cutoff Tests"),
+  para("Table 9: Donut-Hole Robustness"),
+  para("Table 10: Polynomial Order Comparison"),
+  para("Table 11: Covariate Balance at the Cutoff"),
   para("Table 12: Cross-Country Comparison of Incumbency Advantage Estimates"),
   emptyPara(),
   heading1("List of Figures"),
@@ -642,9 +642,9 @@ const ch6 = [
 
   heading2("6.4 List Position Effects (SQ4)"),
   para("A distinctive feature of closed-list PR systems is that party organizations determine the ordering of candidates on the list, and this ordering directly determines which candidates are elected given the number of seats the party wins. Hypothesis H3 posits that incumbency\u2014operationalized as the party barely winning a marginal seat\u2014leads to more favorable list positions for candidates in the subsequent election. This outcome is inherently conditional: list position in the next election is only observed for candidates who reappear on a party list, making this a selected-sample analysis."),
-  para("Table 10 presents the RDD estimates for two list-position outcomes: list_pos_next (the candidate\u2019s raw list position in the subsequent election) and list_pos_change (the change in list position from the current to the subsequent election, where negative values indicate an improvement). The estimates are reported across the bandwidth grid with province-election clustered standard errors."),
+  para("Table 5 presents the RDD estimates for two list-position outcomes: list_pos_next (the candidate\u2019s raw list position in the subsequent election) and list_pos_change (the change in list position from the current to the subsequent election, where negative values indicate an improvement). The estimates are reported across the bandwidth grid with province-election clustered standard errors."),
   emptyPara(),
-  para([new TextRun({ text: "Table 10: List Position Effects \u2013 RDD Estimates (Conditional on Running Again)", bold: true, font: "Arial", size: 22 })], { alignment: AlignmentType.CENTER }),
+  para([new TextRun({ text: "Table 5: List Position Effects \u2013 RDD Estimates (Conditional on Running Again)", bold: true, font: "Arial", size: 22 })], { alignment: AlignmentType.CENTER }),
 
   (() => {
     const colW = [1700, 900, 900, 1100, 1100, 1100, 900];
@@ -681,9 +681,9 @@ const ch6 = [
 
   heading2("6.5 Heterogeneity by District Magnitude (SQ3)"),
   para("Sub-question 3 asks whether the incumbency advantage varies across districts of different sizes. District magnitude\u2014the number of seats allocated to a province\u2014is a key institutional parameter that shapes the competitiveness and proportionality of elections. In small-magnitude districts (2\u20134 seats), the effective threshold for winning a seat is high, competition is intense, and a single seat can represent a large share of the province\u2019s representation. In large-magnitude districts (10+ seats), the threshold is lower, and the marginal seat represents a smaller fraction of total representation."),
-  para("To investigate this heterogeneity, I split the analysis sample at the median district magnitude and re-estimate the main RDD specification separately for high-magnitude and low-magnitude provinces. Table 11 presents the results."),
+  para("To investigate this heterogeneity, I split the analysis sample at the median district magnitude and re-estimate the main RDD specification separately for high-magnitude and low-magnitude provinces. Table 6 presents the results."),
   emptyPara(),
-  para([new TextRun({ text: "Table 11: Heterogeneity by District Magnitude \u2013 RDD Estimates (BW = 0.05)", bold: true, font: "Arial", size: 22 })], { alignment: AlignmentType.CENTER }),
+  para([new TextRun({ text: "Table 6: Heterogeneity by District Magnitude \u2013 RDD Estimates (BW = 0.05)", bold: true, font: "Arial", size: 22 })], { alignment: AlignmentType.CENTER }),
 
   (() => {
     const colW = [1200, 1600, 900, 1100, 1100, 1200, 900];
@@ -723,7 +723,7 @@ const ch7 = [
   heading2("7.1 McCrary Density Test"),
   para("A fundamental assumption of the RDD is that units cannot precisely manipulate the running variable to sort around the cutoff. I test this assumption using a McCrary (2008) density test, which examines whether there is a discontinuity in the density of the running variable at the cutoff."),
   emptyPara(),
-  para([new TextRun({ text: "Table 5: McCrary Density Tests", bold: true, font: "Arial", size: 22 })], { alignment: AlignmentType.CENTER }),
+  para([new TextRun({ text: "Table 7: McCrary Density Tests", bold: true, font: "Arial", size: 22 })], { alignment: AlignmentType.CENTER }),
 
   (() => {
     const colW = [1200, 1200, 1500, 1500, 1200, 1200];
@@ -749,7 +749,7 @@ const ch7 = [
     });
   })(),
   emptyPara(),
-  para("The McCrary density tests provide no evidence of manipulation of the running variable. The log-density discontinuity estimates range from \u22120.081 to 0.123, none of which is statistically significant (all p-values > 0.35). The implied density ratios at the cutoff are close to one, indicating no bunching of observations just above or below the threshold. This is consistent with the expectation that parties cannot precisely control the vote margin that determines marginal seat allocation."),
+  para("The McCrary density tests provide no evidence of manipulation of the running variable. The log-density discontinuity estimates range from \u22120.081 to 0.123, none of which is statistically significant (all p-values well above conventional significance levels). The implied density ratios at the cutoff are close to one, indicating no bunching of observations just above or below the threshold. This is consistent with the expectation that parties cannot precisely control the vote margin that determines marginal seat allocation."),
   para("Figure 4 provides a visual representation of the running variable distribution. The histogram shows no visible bunching at the cutoff, with roughly symmetric frequency counts on either side, further supporting the absence of manipulation."),
   figureImage("fig4_density_test.png", 14),
   figCaption("Figure 4: McCrary Density Test. Distribution of the running variable around the cutoff (BW = 0.05)."),
@@ -757,7 +757,7 @@ const ch7 = [
   heading2("7.2 Placebo Cutoff Tests"),
   para("If the RDD design is valid, we should not observe significant effects at placebo cutoffs where no treatment discontinuity exists. I estimate the RDD at the median of each side of the running variable distribution\u2014the left-side median (approximately \u22120.048) and the right-side median (approximately 0.092)\u2014across multiple bandwidths."),
   emptyPara(),
-  para([new TextRun({ text: "Table 6: Placebo Cutoff Tests (Selected Results, BW = 0.05)", bold: true, font: "Arial", size: 22 })], { alignment: AlignmentType.CENTER }),
+  para([new TextRun({ text: "Table 8: Placebo Cutoff Tests (Selected Results, BW = 0.05)", bold: true, font: "Arial", size: 22 })], { alignment: AlignmentType.CENTER }),
 
   (() => {
     const colW = [1600, 1600, 1400, 1400, 1400];
@@ -787,7 +787,7 @@ const ch7 = [
   heading2("7.3 Donut-Hole Robustness"),
   para("To assess whether the results are driven by observations very close to the cutoff\u2014where manipulation or measurement error might be most concerning\u2014I implement donut-hole specifications that exclude observations within a small radius of the cutoff."),
   emptyPara(),
-  para([new TextRun({ text: "Table 7: Donut-Hole Robustness (BW = 0.05)", bold: true, font: "Arial", size: 22 })], { alignment: AlignmentType.CENTER }),
+  para([new TextRun({ text: "Table 9: Donut-Hole Robustness (BW = 0.05)", bold: true, font: "Arial", size: 22 })], { alignment: AlignmentType.CENTER }),
 
   (() => {
     const colW = [1600, 1300, 1300, 1300, 1300];
@@ -819,7 +819,7 @@ const ch7 = [
   heading2("7.4 Polynomial Order Sensitivity"),
   para("I compare the baseline local-linear (first-order polynomial) specification with a local-quadratic (second-order polynomial) specification to assess sensitivity to functional form assumptions."),
   emptyPara(),
-  para([new TextRun({ text: "Table 8: Polynomial Order Comparison (BW = 0.05)", bold: true, font: "Arial", size: 22 })], { alignment: AlignmentType.CENTER }),
+  para([new TextRun({ text: "Table 10: Polynomial Order Comparison (BW = 0.05)", bold: true, font: "Arial", size: 22 })], { alignment: AlignmentType.CENTER }),
 
   (() => {
     const colW = [1600, 1600, 1300, 1300, 1300];
@@ -847,9 +847,9 @@ const ch7 = [
   para("The local-quadratic estimates are broadly consistent with the linear specification. For \u201Cruns next,\u201D the quadratic estimate is somewhat larger (0.329 vs. 0.285) but within the confidence intervals. For \u201Cwins next,\u201D the estimates are nearly identical (0.180 vs. 0.186). Both specifications yield statistically significant effects, indicating that the results are not driven by the choice of polynomial order."),
 
   heading2("7.5 Covariate Balance"),
-  para("Table 9 examines whether pre-determined covariates exhibit discontinuities at the cutoff, which would suggest potential violations of the RDD identifying assumption."),
+  para("Table 11 examines whether pre-determined covariates exhibit discontinuities at the cutoff, which would suggest potential violations of the RDD identifying assumption."),
   emptyPara(),
-  para([new TextRun({ text: "Table 9: Covariate Balance at the Cutoff (BW = 0.05)", bold: true, font: "Arial", size: 22 })], { alignment: AlignmentType.CENTER }),
+  para([new TextRun({ text: "Table 11: Covariate Balance at the Cutoff (BW = 0.05)", bold: true, font: "Arial", size: 22 })], { alignment: AlignmentType.CENTER }),
 
   (() => {
     const colW = [2000, 1400, 1400, 1400, 1200];
@@ -875,7 +875,7 @@ const ch7 = [
     });
   })(),
   emptyPara(),
-  para("Most covariates are well-balanced at the cutoff. Blank vote share, list position, and log party votes show no significant discontinuity (all p > 0.30). The female share covariate shows a statistically significant difference at the 0.05 bandwidth (p = 0.009), though this effect attenuates at larger bandwidths and is not robust across all specifications. Party seats shows significance (p = 0.014), but this is partly mechanical given that winning the marginal seat directly increases seat count. Overall, the balance evidence supports the validity of the design."),
+  para("Most covariates are well-balanced at the cutoff. Blank vote share, list position, and log party votes show no significant discontinuity (all p > 0.30). The female share covariate shows a statistically significant difference at the 0.05 bandwidth (p = 0.009), though this effect attenuates at larger bandwidths and is not robust across all specifications. Party seats shows significance (p = 0.015), but this is partly mechanical given that winning the marginal seat directly increases seat count. Overall, the balance evidence supports the validity of the design."),
   para("Figure 6 provides a visual summary of the covariate balance tests. The coefficient plot shows RDD estimates and 95% confidence intervals for each covariate. Covariates highlighted in red indicate statistical significance at the 5% level; blue indicates insignificance. Most confidence intervals comfortably include zero."),
   figureImage("fig6_covariate_balance.png", 14),
   figCaption("Figure 6: Covariate Balance at the Cutoff. RDD estimates with 95% CIs. Red = significant at 5%."),
