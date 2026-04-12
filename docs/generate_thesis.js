@@ -871,7 +871,7 @@ const ch7 = [
     });
   })(),
   emptyPara(),
-  para("Most covariates are well-balanced. Female share shows a significant difference (p = 0.009) that attenuates at wider bandwidths. Party seats is significant (p = 0.015) but partly mechanical, since winning the marginal seat directly increases seat count. Overall, the balance evidence supports the design\u2019s validity. Figure 6 visualizes these results."),
+  para("Most covariates are well-balanced. Female share shows a significant difference (p = 0.009) that attenuates at wider bandwidths. Party seats is significant (p = 0.015) but entirely mechanical, since winning the marginal seat directly increases seat count by one. Overall, the balance evidence supports the design\u2019s validity. Figure 6 visualizes these results."),
   figureImage("fig6_covariate_balance.png", 14),
   figCaption("Figure 6: Covariate Balance at the Cutoff. RDD estimates with 95% CIs. Red = significant at 5%."),
 
